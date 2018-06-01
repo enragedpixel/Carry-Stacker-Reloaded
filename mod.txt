@@ -34,7 +34,7 @@
             "script_path" : "lua/antianticheat.lua"
         },
         {
-            "hook_id" : "lib/network/handlers/unitnetworkhandler"
+            "hook_id" : "lib/network/handlers/unitnetworkhandler",
             "script_path" : "lua/antianticheat.lua"
         },
         {
