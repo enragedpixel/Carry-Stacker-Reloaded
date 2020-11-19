@@ -1,9 +1,17 @@
 {
+	"bltcs_common_ok": "Okay",
+
 	"bltcs_options_menu_title" : "Carry Stacker Reloaded",
 	"bltcs_options_menu_desc"  : "Options of Carry Stacker Reloaded",
 
 	"bltcs_button_help_title" : "Help",
 	"bltcs_button_help_desc"  : "Show the help menu",
+
+	"bltcs_help_title": "Carry Stacker Help",
+	"bltcs_help_message": "Carry Stacker has been rewritten almost entirely from scratch.\n\nWhy, you ask?\nWell, let's just say I didn't like the implementation of it before.\n\nThis new version now allows you to carry every type of bag at once.\nAs well, it now features movement penalty!\nThat's right, no more super-OP on this one.\n\nThe system has a bit of math behind it. Think about your full movement speed as 100/100.\nNow, you have a \"Light\" Bag that applies 10% penalty to that. This makes it 90/100, since 10% of the 100 is 10.\nIf you pick up another \"Light\" Bag, it will apply another 10%. This time, to the 90, which makes it 81/100.\n\nThe higher the penalty (Slider in percentage), the lesser the amount of bags you can carry.\nThe default values, for example, allow for a mix of 3 \"Light\" and 3 \"Heavy\" Bags.\nIf your movement speed reaches 25/100, you can't pick up any more bags.\n__________________________________\nThe sliders are for the different types of bags.\n\nLight:\nJewelry, Painting, Coke, Meth, Evidence\n\nMedium:\nMoney, Ammo, Samurai Armor, Equipment Bag, Artifact (Light)\n\nHeavy:\nGold, Person, Weapon, Circuit, Turret, Safe\n\nVery Heavy:\nArtifact (Heavy)\n\nMega Heavy:\nEngine",
+
+	"bltcs_playing_as_client_title" : "Carry Stacker - Client",
+	"bltcs_playing_as_client_message" : "You are currently playing as a client.\nThe Carry Stacker settings are being synced from the host.\nChanges you make in here do not apply for the current heist.",
 
 	"bltcs_button_apply_title" : "Apply",
 	"bltcs_button_apply_desc"  : "Apply the changes (rounds the numbers)",
