@@ -352,15 +352,15 @@ Hooks:Add("MenuManagerInitialize",
 		MenuCallbackHandler.BLT_CarryStacker_Reset = function(this, item)
 			BLT_CarryStacker:ResetSettings()
 
-			MenuHelper:ResetItemsToDefaultValue(item, {["bltcs_light"] = true}, 
+			MenuHelper:ResetItemsToDefaultValue(item, {bltcs_light = true}, 
 				BLT_CarryStacker.settings.movement_penalties.light)
-			MenuHelper:ResetItemsToDefaultValue(item, {["bltcs_medium"] = true}, 
+			MenuHelper:ResetItemsToDefaultValue(item, {bltcs_medium = true}, 
 				BLT_CarryStacker.settings.movement_penalties.medium)
-			MenuHelper:ResetItemsToDefaultValue(item, {["bltcs_heavy"] = true}, 
+			MenuHelper:ResetItemsToDefaultValue(item, {bltcs_heavy = true}, 
 				BLT_CarryStacker.settings.movement_penalties.heavy)
-			MenuHelper:ResetItemsToDefaultValue(item, {["bltcs_very_heavy"] = true}, 
+			MenuHelper:ResetItemsToDefaultValue(item, {bltcs_very_heavy = true}, 
 				BLT_CarryStacker.settings.movement_penalties.very_heavy)
-			MenuHelper:ResetItemsToDefaultValue(item, {["bltcs_mega_heavy"] = true}, 
+			MenuHelper:ResetItemsToDefaultValue(item, {bltcs_mega_heavy = true}, 
 				BLT_CarryStacker.settings.movement_penalties.mega_heavy)
 		end
 
@@ -434,9 +434,9 @@ Hooks:Add("MenuManagerInitialize",
 				for i, v in pairs(BLT_CarryStacker.settings.movement_penalties) do
 					tbl[i] = v
 				end
-				tbl["toggle_host"] = BLT_CarryStacker.settings["toggle_host"]
-				tbl["toggle_stealth"] = BLT_CarryStacker.settings["toggle_stealth"]
-				tbl["toggle_offline"] = BLT_CarryStacker.settings["toggle_offline"]
+				tbl.toggle_host = BLT_CarryStacker.settings.toggle_host
+				tbl.toggle_stealth = BLT_CarryStacker.settings.toggle_stealth
+				tbl.toggle_offline = BLT_CarryStacker.settings.toggle_offline
 				return tbl
 			-- The function is declared and called
 			end)()
