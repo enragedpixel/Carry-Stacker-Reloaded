@@ -17,7 +17,7 @@
 	"bltcs_button_apply_desc"  : "Apply the changes (rounds the numbers)",
 
 	"bltcs_button_reset_title" : "Reset",
-	"bltcs_button_reset_desc"  : "Resets the numbers to their default",
+	"bltcs_button_reset_desc"  : "Resets the mod options to their default",
 
 	"bltcs_toggle_host_sync_title" : "[HOST] Sync Settings with Clients",
 	"bltcs_toggle_host_sync_desc" : "Send your settings over to the other players if you are the host",

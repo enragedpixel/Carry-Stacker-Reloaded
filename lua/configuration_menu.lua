@@ -352,6 +352,7 @@ Hooks:Add("MenuManagerInitialize",
 		MenuCallbackHandler.BLT_CarryStacker_Reset = function(this, item)
 			BLT_CarryStacker:ResetSettings()
 
+			-- Bag weights
 			MenuHelper:ResetItemsToDefaultValue(item, {bltcs_light = true}, 
 				BLT_CarryStacker.settings.movement_penalties.light)
 			MenuHelper:ResetItemsToDefaultValue(item, {bltcs_medium = true}, 
@@ -362,6 +363,14 @@ Hooks:Add("MenuManagerInitialize",
 				BLT_CarryStacker.settings.movement_penalties.very_heavy)
 			MenuHelper:ResetItemsToDefaultValue(item, {bltcs_mega_heavy = true}, 
 				BLT_CarryStacker.settings.movement_penalties.mega_heavy)
+
+			-- Toggle buttons
+			MenuHelper:ResetItemsToDefaultValue(item, {bltcs_host_sync = true},
+				BLT_CarryStacker.settings.toggle_host)
+			MenuHelper:ResetItemsToDefaultValue(item, {bltcs_stealth_only = true},
+				BLT_CarryStacker.settings.toggle_stealth)
+			MenuHelper:ResetItemsToDefaultValue(item, {bltcs_offline_only = true},
+				BLT_CarryStacker.settings.toggle_offline)
 		end
 
 		MenuCallbackHandler.BLT_CarryStacker_Open_Options = function(this, is_opening)
