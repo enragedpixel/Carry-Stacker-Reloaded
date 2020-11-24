@@ -112,6 +112,36 @@
 			"value" : "toggle_offline",
 			"default_value" : false
 		},
+
+		{
+			"type" : "divider",
+			"size" : 20
+		},
+
+		{
+			"type" : "toggle",
+			"id" : "bltcs_debug",
+			"title" : "bltcs_toggle_debug_title",
+			"description" : "bltcs_toggle_debug_desc",
+			"callback" : "BLT_CarryStacker_toggleDebug",
+			"value" : "toggle_debug",
+			"default_value" : false
+		},
+		{
+			"type" : "toggle",
+			"id" : "bltcs_repeated_logs",
+			"title" : "bltcs_toggle_repeated_logs_title",
+			"description" : "bltcs_toggle_repeated_logs_desc",
+			"callback" : "BLT_CarryStacker_toggleRepeatedLogs",
+			"value" : "toggle_repeated_logs",
+			"default_value" : false
+		},
+
+		{
+			"type" : "divider",
+			"size" : 20
+		},
+
 		{
 			"type" : "button",
 			"id" : "bltcs_button_reset",

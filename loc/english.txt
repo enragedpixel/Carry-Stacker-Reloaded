@@ -28,6 +28,11 @@
 	"bltcs_toggle_offline_only_title" : "Offline only",
 	"bltcs_toggle_offline_only_desc" : "Allows only in offline mode",
 
+	"bltcs_toggle_debug_title" : "DEBUG",
+	"bltcs_toggle_debug_desc" : "Show mod's logs",
+
+	"bltcs_toggle_repeated_logs_title" : "Repeated logs",
+	"bltcs_toggle_repeated_logs_desc" : "Show log messages that get repeated many times per second (Only if DEBUG is enabled). WARNINIG: THE LOGS WILL USE LOTS OF MEMORY AND PERFORMANCE MIGHT BE GREATLY REDUCED",
 
 	"bltcs_slider_light_title" : "Light Bags",
 	"bltcs_slider_light_desc" : "Define the movement penalty for Light bags",

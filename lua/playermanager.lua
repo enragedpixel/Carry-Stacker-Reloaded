@@ -11,18 +11,24 @@ local master_PlayerManager_can_carry = PlayerManager.can_carry
 	a bag.
 ]]
 function PlayerManager:can_carry(carry_id)
+	BLT_CarryStacker:Log("Request to check whether the player can carry " ..
+		tostring(carry_id))
 	if not BLT_CarryStacker:IsModEnabled() then
-		return master_PlayerManager_can_carry(self, carry_id)
+		return BLT_CarryStacker:DoMasterFunction(false,
+			master_PlayerManager_can_carry, self, carry_id)
 	end
+	BLT_CarryStacker:Log("Returning the result of BLT_CarryStacker:CanCarry")
 	return BLT_CarryStacker:CanCarry(carry_id)
 end
 
 --[[
 	This function will be called when the player wants to carry a bag.
 ]]
-function PlayerManager:drop_carry( ... )
+function PlayerManager:drop_carry(...)
+	BLT_CarryStacker:Log("Request to drop a carry")
 	if not BLT_CarryStacker:IsModEnabled() then
-		master_PlayerManager_drop_carry(self, ... )
+		BLT_CarryStacker:DoMasterFunction(false,
+			master_PlayerManager_drop_carry, self, ...)
 		return
 	end
 
@@ -30,6 +36,8 @@ function PlayerManager:drop_carry( ... )
 	if cdata then
 		master_PlayerManager_drop_carry(self, ...)
 		if #BLT_CarryStacker.stack > 0 then
+			BLT_CarryStacker:Log("Since there are more items in the stack, " ..
+				"using master set_carry with the current top-most carry")
 			cdata = BLT_CarryStacker.stack[#BLT_CarryStacker.stack]
 			master_PlayerManager_set_carry(self, cdata.carry_id, 
 				cdata.multiplier or 1, cdata.dye_initiated, 
@@ -41,13 +49,19 @@ end
 --[[
 	This function will be called after player is done picking up a bag.
 ]]
-function PlayerManager:set_carry( ... )
+function PlayerManager:set_carry(...)
+	BLT_CarryStacker:Log("Request to set a new carry")
 	if not BLT_CarryStacker:IsModEnabled() then
-		master_PlayerManager_set_carry(self, ... )
+		BLT_CarryStacker:DoMasterFunction(false,
+			master_PlayerManager_set_carry, self, ...)
 		return
 	end
 
+	BLT_CarryStacker:Log("Setting the carry with master set_carry and " ..
+		"adding the item to the stack")
 	master_PlayerManager_set_carry(self, ...)
 	BLT_CarryStacker:AddCarry(self:get_my_carry_data())
+	-- This will be used to prevent the player from picking a new bag
+	-- within the next 0.1 sec
 	PlayerStandard:block_use_item()
 end
