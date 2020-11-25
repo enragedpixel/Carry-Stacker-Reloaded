@@ -69,8 +69,16 @@ def main():
     print(f'The PAYDAY2/mods dir is: "{MODS_DIR}"')
     print(f'The development dir is: "{DEVELOPMENT_DIR}"')
 
+    # Directory where the mod will be installed
+    modDir = MODS_DIR / DEVELOPMENT_DIR.name
+
+    if modDir == DEVELOPMENT_DIR:
+        print("The development dir is already the mod's dir. The mod "
+            + "is already installed")
+        sys.exit(1)
+
     print(f'Deleting the PAYDAY2/mods/{DEVELOPMENT_DIR.name} if exists')
-    shutil.rmtree(MODS_DIR / DEVELOPMENT_DIR.name, ignore_errors=True)
+    shutil.rmtree(modDir, ignore_errors=True)
 
     copy(DEVELOPMENT_DIR, MODS_DIR)
 
