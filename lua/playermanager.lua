@@ -32,18 +32,31 @@ function PlayerManager:drop_carry(...)
 		return
 	end
 
-	local cdata = BLT_CarryStacker:RemoveCarry()
-	if cdata then
-		master_PlayerManager_drop_carry(self, ...)
-		if #BLT_CarryStacker.stack > 0 then
-			BLT_CarryStacker:Log("Since there are more items in the stack, " ..
-				"using master set_carry with the current top-most carry")
-			cdata = BLT_CarryStacker.stack[#BLT_CarryStacker.stack]
-			master_PlayerManager_set_carry(self, cdata.carry_id, 
-				cdata.multiplier or 1, cdata.dye_initiated, 
-				cdata.has_dye_pack, cdata.dye_value_multiplier)
-		end
-	end
+	if #BLT_CarryStacker.stack == 0 then
+        BLT_CarryStacker:Log("WARNING: Request to drop carry, but the stack is empty")
+        return
+    end
+
+    local cdata = BLT_CarryStacker.stack[#BLT_CarryStacker.stack]
+    BLT_CarryStacker:Log("The carry being dropped is: " .. tostring(cdata.carry_id))
+    master_PlayerManager_drop_carry(self, ...)
+    BLT_CarryStacker:Log("The carry has been dropped")
+    -- The Carry has to be removed from the stack after master 
+    -- drop_carry. This is so that the mod's state is updated 
+    -- afterwards. Therefore, the anticheat engine wont detect cheating
+    -- when dropping the carry
+    BLT_CarryStacker:RemoveCarry()
+    -- If there are more carries in the stack, the top-most has to be 
+    -- set using master set_carry so the game registers it for the next 
+    -- drop
+    if #BLT_CarryStacker.stack > 0 then
+        BLT_CarryStacker:Log("Since there are more items in the stack, " ..
+                "using master set_carry with the current top-most carry")
+        cdata = BLT_CarryStacker.stack[#BLT_CarryStacker.stack]
+        master_PlayerManager_set_carry(self, cdata.carry_id, 
+                cdata.multiplier or 1, cdata.dye_initiated, 
+                cdata.has_dye_pack, cdata.dye_value_multiplier)
+    end
 end
 
 --[[
