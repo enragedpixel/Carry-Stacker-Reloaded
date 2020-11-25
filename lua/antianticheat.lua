@@ -9,7 +9,7 @@
 ]]
 function doAntiAntiCheat(master_function, ...)
 	BLT_CarryStacker:Log("Request to do the antianticheat procedure")
-	if not BLT_CarryStacker:IsModEnabled() then
+	if BLT_CarryStacker:GetModState() == BLT_CarryStacker.STATES.DISABLED then
 		return BLT_CarryStacker:DoMasterFunction(false, master_function, ...)
 	end
 	BLT_CarryStacker:Log("The mod is enabled. Returning true")

@@ -1,7 +1,7 @@
 local master_PlayerCarry_perform_jump = PlayerCarry._perform_jump
 function PlayerCarry:_perform_jump(jump_vec)
 	BLT_CarryStacker:Log("Request to perform a jump")
-	if not BLT_CarryStacker:IsModEnabled() then
+	if BLT_CarryStacker:GetModState() == BLT_CarryStacker.STATES.DISABLED then
 		BLT_CarryStacker:DoMasterFunction(false, 
 			master_PlayerCarry_perform_jump, self, jump_vec)
 		return
@@ -20,7 +20,7 @@ end
 local master_PlayerCarry_get_max_walk_speed = PlayerCarry._get_max_walk_speed
 function PlayerCarry:_get_max_walk_speed(...)
 	BLT_CarryStacker:RLog("Request to get the max walking speed")
-	if not BLT_CarryStacker:IsModEnabled() then
+	if BLT_CarryStacker:GetModState() == BLT_CarryStacker.STATES.DISABLED then
 		return BLT_CarryStacker:DoMasterFunction(true, 
 			master_PlayerCarry_get_max_walk_speed, self, ...)
 	end
@@ -46,7 +46,7 @@ end
 local master_PlayerCarry_get_walk_headbob = PlayerCarry._get_walk_headbob
 function PlayerCarry:_get_walk_headbob(...)
 	BLT_CarryStacker:RLog("Request to get walk headbob")
-	if not BLT_CarryStacker:IsModEnabled() then
+	if BLT_CarryStacker:GetModState() == BLT_CarryStacker.STATES.DISABLED then
 		return BLT_CarryStacker:DoMasterFunction(true, 
 			master_PlayerCarry_get_walk_headbob, self, ...)
 	end
@@ -61,7 +61,7 @@ end
 local master_PlayerCarry_check_action_run = PlayerCarry._check_action_run
 function PlayerCarry:_check_action_run(...)
 	BLT_CarryStacker:RLog("Request to check whether the player can run")
-	if not BLT_CarryStacker:IsModEnabled() then
+	if BLT_CarryStacker:GetModState() == BLT_CarryStacker.STATES.DISABLED then
 		BLT_CarryStacker:DoMasterFunction(true, 
 		 	master_PlayerCarry_check_action_run, self, ...)
 		return

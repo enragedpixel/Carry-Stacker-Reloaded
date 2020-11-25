@@ -13,7 +13,7 @@ local master_PlayerManager_can_carry = PlayerManager.can_carry
 function PlayerManager:can_carry(carry_id)
 	BLT_CarryStacker:Log("Request to check whether the player can carry " ..
 		tostring(carry_id))
-	if not BLT_CarryStacker:IsModEnabled() then
+	if BLT_CarryStacker:GetModState() == BLT_CarryStacker.STATES.DISABLED then
 		return BLT_CarryStacker:DoMasterFunction(false,
 			master_PlayerManager_can_carry, self, carry_id)
 	end
@@ -26,7 +26,7 @@ end
 ]]
 function PlayerManager:drop_carry(...)
 	BLT_CarryStacker:Log("Request to drop a carry")
-	if not BLT_CarryStacker:IsModEnabled() then
+	if BLT_CarryStacker:GetModState() == BLT_CarryStacker.STATES.DISABLED then
 		BLT_CarryStacker:DoMasterFunction(false,
 			master_PlayerManager_drop_carry, self, ...)
 		return
@@ -64,7 +64,7 @@ end
 ]]
 function PlayerManager:set_carry(...)
 	BLT_CarryStacker:Log("Request to set a new carry")
-	if not BLT_CarryStacker:IsModEnabled() then
+	if BLT_CarryStacker:GetModState() == BLT_CarryStacker.STATES.DISABLED then
 		BLT_CarryStacker:DoMasterFunction(false,
 			master_PlayerManager_set_carry, self, ...)
 		return
