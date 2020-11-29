@@ -34,11 +34,18 @@ function PlayerManager:drop_carry(...)
 
 	if #BLT_CarryStacker.stack == 0 then
         BLT_CarryStacker:Log("WARNING: Request to drop carry, but the stack is empty")
-        return
+        -- If the mod was disabled and the player picked a carry, the 
+        -- mod will not be aware of it. This is, even if #stack == 0, 
+        -- the player could be carrying a bag
+        -- return
     end
 
     local cdata = BLT_CarryStacker.stack[#BLT_CarryStacker.stack]
-    BLT_CarryStacker:Log("The carry being dropped is: " .. tostring(cdata.carry_id))
+    if cdata then
+        BLT_CarryStacker:Log("The carry being dropped is: " .. tostring(cdata.carry_id))
+    else
+        BLT_CarryStacker:Log("The mod has no data on the carry being dropped")
+    end
     master_PlayerManager_drop_carry(self, ...)
     BLT_CarryStacker:Log("The carry has been dropped")
     -- The Carry has to be removed from the stack after master 
