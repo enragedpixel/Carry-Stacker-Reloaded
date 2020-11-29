@@ -83,6 +83,17 @@ BLT_CarryStacker.host_settings = {
 	]]
 	movement_penalties = {}
 }
+--[[
+	closePauseMenuCallbacks is a table.
+
+	It will contain the functions to be called when closing the pause
+	menu.
+
+	The keys in the table has to be the name of the setting that 
+	triggered the callback. The value has to be a function that takes 
+	no arguments.
+]]
+BLT_CarryStacker.closePauseMenuCallbacks = {}
 
 --[[
 	Convert the value returned when clicking a toggle button to a 
@@ -124,6 +135,19 @@ function BLT_CarryStacker:RLog(message)
 	if self.settings.toggle_repeated_logs then
 		BLT_CarryStacker:Log(message, 3)
 	end
+end
+
+--[[
+	Show a chat message that only this client will see.
+
+	messageId is a string representing a localized message. For example:
+		"bltcs_stealth_only_alarm_message"
+]]
+function BLT_CarryStacker:ShowInfoMessage(messageId)
+	local messageSenderName = "CARRY STACKER"
+    local message = managers.localization:text(messageId)
+    local color = Color("5FE1FF") --cyan
+    managers.chat:_receive_message(1, messageSenderName, message, color)
 end
 
 --[[
@@ -469,6 +493,24 @@ Hooks:Add("LocalizationManagerPostInit",
 	end
 )
 
+Hooks:PostHook(MenuManager, "close_menu", 
+	"MenuManager_Post_close_menu_BLT_CarryStacker",
+	function(menu_manager, menu_name)
+		if menu_name == "menu_pause" then
+			-- This section of the code will be executed whenever the 
+			-- player closes the pause menu in-game
+			BLT_CarryStacker:Log("Closing the pause menu")
+			for settingName, callback in pairs(BLT_CarryStacker.closePauseMenuCallbacks) do
+				if callback then
+					BLT_CarryStacker:Log("Calling the callback for " .. settingName)
+					callback()
+				end
+			end
+			BLT_CarryStacker.closePauseMenuCallbacks = {}
+		end
+	end
+)
+
 Hooks:Add("MenuManagerInitialize", 
 	"MenuManagerInitialize_BLT_CarryStacker", 
 	function(menu_manager)
@@ -578,12 +620,55 @@ Hooks:Add("MenuManagerInitialize",
 
 		MenuCallbackHandler.BLT_CarryStacker_toggleStealthOnly = function(this, item)
 			BLT_CarryStacker:Log("The player wants to change the value of toggle_stealth")
-			BLT_CarryStacker:SetSetting("toggle_stealth", val2bool(item:value()))
+			local value = val2bool(item:value())
+			BLT_CarryStacker:SetSetting("toggle_stealth", value)
+
+			if not value then
+				BLT_CarryStacker.closePauseMenuCallbacks.toggle_stealth = nil
+			else
+				-- Add a callback to check whether the info message to 
+				-- drop bags should be shown
+				BLT_CarryStacker.closePauseMenuCallbacks.toggle_stealth = function()
+					-- The checks are done in the callback and not  
+					-- before creating it as the alarm could go off  
+					-- while in the menu
+					if Utils:IsInHeist() 
+							and #BLT_CarryStacker.stack > 0 
+							and not managers.groupai:state():whisper_mode() then
+						BLT_CarryStacker:Log("The player just configured " ..
+							"the mod to be used Stealth-Only, but the alarm " ..
+							"is triggered and they are carrying bags. " ..
+							"Advising the mod wont be disabled until all " ..
+							"bags are dropped")
+						BLT_CarryStacker:ShowInfoMessage("bltcs_stealth_only_alarm_message")
+					end
+				end
+			end
 		end
 
 		MenuCallbackHandler.BLT_CarryStacker_toggleOfflineOnly = function(this, item)
 			BLT_CarryStacker:Log("The player wants to change the value of toggle_offline")
-			BLT_CarryStacker:SetSetting("toggle_offline", val2bool(item:value()))
+			local value = val2bool(item:value())
+			BLT_CarryStacker:SetSetting("toggle_offline", value)
+
+			if not value then
+				BLT_CarryStacker.closePauseMenuCallbacks.toggle_offline = nil
+			else
+				-- Add a callback to check whether the info message to 
+				-- drop bags should be shown
+				BLT_CarryStacker.closePauseMenuCallbacks.toggle_offline = function()
+					if Utils:IsInHeist() 
+							and #BLT_CarryStacker.stack > 0 
+							and not Global.game_settings.single_player then
+						BLT_CarryStacker:Log("The player just configured " ..
+							"the mod to be used Offline-Only, but the player " ..
+							"is online and they are carrying bags. " ..
+							"Advising the mod wont be disabled until all " ..
+							"bags are dropped")
+						BLT_CarryStacker:ShowInfoMessage("bltcs_offline_only_online_message")
+					end
+				end
+			end
 		end
 
 		MenuCallbackHandler.BLT_CarryStacker_toggleDebug = function(this, item)

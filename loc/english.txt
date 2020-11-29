@@ -47,5 +47,9 @@
 	"bltcs_slider_veryheavy_desc" : "Define the movement penalty for Very Heavy bags",
 
 	"bltcs_slider_megaheavy_title" : "Mega Heavy Bags",
-	"bltcs_slider_megaheavy_desc" : "Define the movement penalty for Mega Heavy bags"
+	"bltcs_slider_megaheavy_desc" : "Define the movement penalty for Mega Heavy bags",
+
+	"bltcs_stealth_only_alarm_message": "Playing in Stealth-Only mode. The mod wont be disabled until all bags are dropped",
+
+	"bltcs_offline_only_online_message": "Playing in Offline-Only mode. The mod wont be disabled until all bags are dropped"
 }
