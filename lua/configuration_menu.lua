@@ -144,6 +144,11 @@ end
 		"bltcs_stealth_only_alarm_message"
 ]]
 function BLT_CarryStacker:ShowInfoMessage(messageId)
+	BLT_CarryStacker:Log("Request to show info message with id " .. messageId)
+	if not self.settings.toggle_show_chat_info then
+		BLT_CarryStacker:Log("The player does not want messages to be shown. Returning")
+		return
+	end
 	local messageSenderName = "CARRY STACKER"
     local message = managers.localization:text(messageId)
     local color = Color("5FE1FF") --cyan
@@ -236,6 +241,7 @@ function BLT_CarryStacker:ResetSettings()
 	self.settings.toggle_host = true
 	self.settings.toggle_stealth = false
 	self.settings.toggle_offline = false
+	self.settings.toggle_show_chat_info = true
 	self.settings.toggle_debug = false
 	self.settings.toggle_repeated_logs = false
 	self.host_settings.movement_penalties = {}
@@ -560,6 +566,8 @@ Hooks:Add("MenuManagerInitialize",
 				BLT_CarryStacker.settings.toggle_stealth)
 			MenuHelper:ResetItemsToDefaultValue(item, {bltcs_offline_only = true},
 				BLT_CarryStacker.settings.toggle_offline)
+			MenuHelper:ResetItemsToDefaultValue(item, {bltcs_show_chat_info = true},
+				BLT_CarryStacker.settings.toggle_show_chat_info)
 			MenuHelper:ResetItemsToDefaultValue(item, {bltcs_debug = true},
 				BLT_CarryStacker.settings.toggle_debug)
 			MenuHelper:ResetItemsToDefaultValue(item, {bltcs_repeated_logs = true},
@@ -671,6 +679,11 @@ Hooks:Add("MenuManagerInitialize",
 			end
 		end
 
+		MenuCallbackHandler.BLT_CarryStacker_toggleShowChatInfo = function(this, item)
+			BLT_CarryStacker:Log("The player wants to change the value of toggle_show_chat_info")
+			BLT_CarryStacker:SetSetting("toggle_show_chat_info", val2bool(item:value()))
+		end
+
 		MenuCallbackHandler.BLT_CarryStacker_toggleDebug = function(this, item)
 			BLT_CarryStacker:Log("The player wants to change the value of toggle_debug")
 			BLT_CarryStacker:SetSetting("toggle_debug", val2bool(item:value()))
@@ -707,6 +720,7 @@ Hooks:Add("MenuManagerInitialize",
 				tbl.toggle_host = BLT_CarryStacker.settings.toggle_host
 				tbl.toggle_stealth = BLT_CarryStacker.settings.toggle_stealth
 				tbl.toggle_offline = BLT_CarryStacker.settings.toggle_offline
+				tbl.toggle_show_chat_info = BLT_CarryStacker.settings.toggle_show_chat_info
 				tbl.toggle_debug = BLT_CarryStacker.settings.toggle_debug
 				tbl.toggle_repeated_logs = BLT_CarryStacker.settings.toggle_repeated_logs
 				return tbl

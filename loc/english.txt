@@ -28,6 +28,9 @@
 	"bltcs_toggle_offline_only_title" : "Offline only",
 	"bltcs_toggle_offline_only_desc" : "Allows only in offline mode",
 
+	"bltcs_toggle_show_chat_info_title" : "Show chat messages",
+	"bltcs_toggle_show_chat_info_desc" : "Show the mod's chat information messages",
+
 	"bltcs_toggle_debug_title" : "DEBUG",
 	"bltcs_toggle_debug_desc" : "Show mod's logs",
 

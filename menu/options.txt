@@ -112,6 +112,15 @@
 			"value" : "toggle_offline",
 			"default_value" : false
 		},
+		{
+			"type" : "toggle",
+			"id" : "bltcs_show_chat_info",
+			"title" : "bltcs_toggle_show_chat_info_title",
+			"description" : "bltcs_toggle_show_chat_info_desc",
+			"callback" : "BLT_CarryStacker_toggleShowChatInfo",
+			"value" : "toggle_show_chat_info",
+			"default_value" : true
+		},
 
 		{
 			"type" : "divider",
