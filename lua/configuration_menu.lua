@@ -17,7 +17,6 @@ BLT_CarryStacker.STATES = {
 	BEING_DISABLED = "being_disabled",
 	DISABLED = "disabled"
 }
-BLT_CarryStacker.prev_state = BLT_CarryStacker.STATES.ENABLED
 --[[
 	settings is a table.
 
@@ -336,7 +335,6 @@ function BLT_CarryStacker:GetModState()
 	end
 
 	BLT_CarryStacker:RLog("The mod is: " .. tostring(result))
-	self.prev_state = result
 	return result
 end
 
