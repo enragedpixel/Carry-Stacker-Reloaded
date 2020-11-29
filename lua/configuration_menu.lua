@@ -316,16 +316,7 @@ function BLT_CarryStacker:GetModState()
 			"offline, but it is multiplayer. The mod is disabled")
 		result = self.STATES.DISABLED
 	elseif self:IsStealthOnly() 
-			and not managers.groupai:state():whisper_mode() 
-			and #self.stack > 0 then
-			-- and self.prev_state ~= self.STATES.DISABLED then
-		BLT_CarryStacker:RLog("The mod is configured to be used only during " ..
-			"stealth, and it is loud. But the player is carrying bags, " ..
-			"so allowing to drop them")
-		result = self.STATES.BEING_DISABLED
-	elseif self:IsStealthOnly() 
-			and not managers.groupai:state():whisper_mode() 
-			and #self.stack == 0 then
+			and not managers.groupai:state():whisper_mode() then
 		BLT_CarryStacker:RLog("The mod is configured to be used only during " ..
 			"stealth, and it is loud. The mod is disabled")
 		result = self.STATES.DISABLED
@@ -337,6 +328,13 @@ function BLT_CarryStacker:GetModState()
 			"configuration")
 		result = self.host_settings.is_mod_allowed and self.STATES.ENABLED or self.STATES.DISABLED
 	end
+
+	if result == self.STATES.DISABLED and #self.stack > 0 then
+		BLT_CarryStacker:RLog("The mod is to be disabled, but there still " ..
+			"are bags in the stack")
+		result = self.STATES.BEING_DISABLED
+	end
+
 	BLT_CarryStacker:RLog("The mod is: " .. tostring(result))
 	self.prev_state = result
 	return result
