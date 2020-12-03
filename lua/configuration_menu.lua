@@ -238,6 +238,7 @@ function BLT_CarryStacker:ResetSettings()
 		being = 30,
 		slightly_very_heavy = 30
 	}
+	self.settings.toggle_enable = true
 	self.settings.toggle_host = true
 	self.settings.toggle_stealth = false
 	self.settings.toggle_offline = false
@@ -351,7 +352,7 @@ function BLT_CarryStacker:GetModState()
 		result = self.STATES.DISABLED
 	elseif LuaNetworking:IsHost() then
 		BLT_CarryStacker:RLog("The player is the host. The mod is enabled")
-		result = self.STATES.ENABLED
+		result = self.settings.toggle_enable and self.STATES.ENABLED or self.STATES.DISABLED
 	else
 		BLT_CarryStacker:RLog("The player is not the host. Using the host's " ..
 			"configuration")
@@ -560,6 +561,8 @@ Hooks:Add("MenuManagerInitialize",
 				BLT_CarryStacker.settings.movement_penalties.mega_heavy)
 
 			-- Toggle buttons
+			MenuHelper:ResetItemsToDefaultValue(item, {bltcs_enable = true},
+				BLT_CarryStacker.settings.toggle_enable)
 			MenuHelper:ResetItemsToDefaultValue(item, {bltcs_host_sync = true},
 				BLT_CarryStacker.settings.toggle_host)
 			MenuHelper:ResetItemsToDefaultValue(item, {bltcs_stealth_only = true},
@@ -606,6 +609,29 @@ Hooks:Add("MenuManagerInitialize",
 				BLT_CarryStacker:Log("Since host sync is enabled and the " ..
 					" player is the host, synchronising config to peers")
 				BLT_CarryStacker:syncConfigToAll()
+			end
+		end
+
+		MenuCallbackHandler.BLT_CarryStacker_toggleEnable = function(this, item)
+			BLT_CarryStacker:Log("The player wants to change the value of toggle_enable")
+			local value = val2bool(item:value())
+			BLT_CarryStacker:SetSetting("toggle_enable", value)
+
+			if value then
+				BLT_CarryStacker.closePauseMenuCallbacks.toggle_enable = nil
+			else
+				-- Add a callback to check whether the info message to 
+				-- drop bags should be shown
+				BLT_CarryStacker.closePauseMenuCallbacks.toggle_enable = function()
+					if Utils:IsInHeist() 
+							and #BLT_CarryStacker.stack > 0 then
+						BLT_CarryStacker:Log("The player just configured " ..
+							"the mod to be disabled, but carrying bags. " ..
+							"Advising the mod wont be disabled until all " ..
+							"bags are dropped")
+						BLT_CarryStacker:ShowInfoMessage("bltcs_disabled_message")
+					end
+				end
 			end
 		end
 
@@ -717,6 +743,7 @@ Hooks:Add("MenuManagerInitialize",
 				for i, v in pairs(BLT_CarryStacker.settings.movement_penalties) do
 					tbl[i] = v
 				end
+				tbl.toggle_enable = BLT_CarryStacker.settings.toggle_enable
 				tbl.toggle_host = BLT_CarryStacker.settings.toggle_host
 				tbl.toggle_stealth = BLT_CarryStacker.settings.toggle_stealth
 				tbl.toggle_offline = BLT_CarryStacker.settings.toggle_offline

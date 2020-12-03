@@ -20,6 +20,21 @@
 		},
 
 		{
+            "type" : "toggle",
+            "id" : "bltcs_enable",
+            "title" : "bltcs_toggle_enable_title",
+            "description" : "bltcs_toggle_enable_desc",
+            "callback" : "BLT_CarryStacker_toggleEnable",
+            "value" : "toggle_enable",
+            "default_value" : true
+        },
+
+		{
+			"type" : "divider",
+			"size" : 20
+		},
+
+		{
 			"type" : "slider",
 			"id" : "bltcs_light",
 			"title" : "bltcs_slider_light_title",

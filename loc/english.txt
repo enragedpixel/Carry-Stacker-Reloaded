@@ -22,6 +22,9 @@
 	"bltcs_toggle_host_sync_title" : "[HOST] Sync Settings with Clients",
 	"bltcs_toggle_host_sync_desc" : "Send your settings over to the other players if you are the host",
 
+	"bltcs_toggle_enable_title" : "Enabled",
+	"bltcs_toggle_enable_desc" : "Globally enable/disable de mod",
+
 	"bltcs_toggle_stealth_only_title" : "Stealth only",
 	"bltcs_toggle_stealth_only_desc" : "Allows only in stealth mode",
 
@@ -54,5 +57,7 @@
 
 	"bltcs_stealth_only_alarm_message": "Playing in Stealth-Only mode. The mod wont be disabled until all bags are dropped",
 
-	"bltcs_offline_only_online_message": "Playing in Offline-Only mode. The mod wont be disabled until all bags are dropped"
+	"bltcs_offline_only_online_message": "Playing in Offline-Only mode. The mod wont be disabled until all bags are dropped",
+
+	"bltcs_disabled_message": "The mod wont be disabled until all bags are dropped"
 }
