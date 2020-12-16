@@ -30,14 +30,6 @@
             "script_path" : "lua/antianticheat.lua"
         },
         {
-            "hook_id" : "lib/network/base/networkpeer",
-            "script_path" : "lua/antianticheat.lua"
-        },
-        {
-            "hook_id" : "lib/network/handlers/unitnetworkhandler",
-            "script_path" : "lua/antianticheat.lua"
-        },
-        {
             "hook_id" : "lib/units/interactions/interactionext",
             "script_path" : "lua/interactionext.lua"
         },
