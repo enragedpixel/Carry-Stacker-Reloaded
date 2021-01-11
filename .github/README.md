@@ -13,7 +13,7 @@ Well.. You can... Carry multiple bags at once...
 ***Is it restricted to anything?***  
 **Yes!** *Let me fetch you the information from within the mod.*  
 
-![Instructions](.github/img/modDescription.png)
+![Instructions](img/modDescription.png)
 
 ***I want to go full nuts with this. Can I carry an infinite amount of bags somehow?***  
 **Yes.**  
@@ -31,7 +31,7 @@ If a **client** has the mod, and the host **does NOT** have it, the client won't
 It's the same implementation as in *Keepers* or *Moveable Intimidated Cops*, for example.  
 Thanks to TdlQ for the awesome code :)
 
-[![Download](.github/img/downloadButton.png)](https://github.com/enragedpixel/Carry-Stacker-Reloaded/archive/master.zip)
+[![Download](img/downloadButton.png)](https://github.com/enragedpixel/Carry-Stacker-Reloaded/archive/master.zip)
 
 # Changelog:
 - **R9**: Manually enable/disable the mod and chat alerts
