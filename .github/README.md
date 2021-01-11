@@ -29,23 +29,19 @@ If a **client** has the mod, and the host **does NOT** have it, the client won't
 ***When I'm hosting a game, do clients get notified that I am using the mod?***  
 **Yes**, they do get notified about that.  
 It's the same implementation as in *Keepers* or *Moveable Intimidated Cops*, for example.  
-Thanks to TdlQ for the awesome code :)  
-
-***The mod in action* (Youtube video)**  
-[![The mod in action (click here for YT Video)](http://img.youtube.com/vi/3Jl-P5l-3Vk/0.jpg)](http://www.youtube.com/watch?v=3Jl-P5l-3Vk)  
-*I know, I've used the PP trainer in this... But that's the only good way to debug things and to show off features real quick.*
+Thanks to TdlQ for the awesome code :)
 
 # Download:  
-https://github.com/enragedpixel/Carry-Stacker-Reloaded/
+https://github.com/enragedpixel/Carry-Stacker-Reloaded/archive/master.zip
 
 # Changelog:
+- **R9**: Manually enable/disable the mod and chat alerts
 - **R8**: _Offline Only_ and _Stealth Only_ features
 - **R7**: BLT 2.0 Compatibility
 - **R6**: Fix for not being able to properly play the game online (WHO WOULD WANT TO DO SUCH A THING ANYWAY, AM I RIGHT GUYS?... guys...?)  
 
 Also, revamped the config-system a bit. Old config is being deleted, so make sure to change your stuff again :)  
-- **R5**: Fix for duplication. Also, it drops the bags with a proper delay now, as you see here:  
-https://www.youtube.com/watch?v=InCfMRjuboc  
+- **R5**: Fix for duplication. Also, it drops the bags with a proper delay now. 
 - **R4**: Rewrote Power-Throw implementation.  
 It's not double-tap anymore, but rather holding the drop-key down.  
 As long as you hold down the key, you will drop the bags.  
