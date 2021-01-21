@@ -6,6 +6,12 @@ local master_PlayerManager_set_carry = PlayerManager.set_carry
 local master_PlayerManager_drop_carry = PlayerManager.drop_carry
 local master_PlayerManager_can_carry = PlayerManager.can_carry
 
+--[[This will prevent the missing bag when carrying 2 or more bags 
+and throwing them when using The Fixes mod
+]]
+TheFixesPreventer = TheFixesPreventer or {}
+TheFixesPreventer.remove_bag_from_back_playerman = true
+
 --[[
 	This function will be called to check whether the player can carry 
 	a bag.
