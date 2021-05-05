@@ -50,3 +50,6 @@ Upon releasing, you'll stop.
 Added ability to sync the settings with clients, if you're the host. They are only temporary (for the current session) and don't overwrite your own.  
 The host can change them mid-game and they get re-synced :)  
 - **R1**: A fresh start...
+
+# Compatibility Issues
+**The Fixes**: For Carry Stacker Reloaded to work, the fix `remove_bag_from_back_playerman` has been disabled. This fix is, as per the mod's description: `If someone throws a bag then remove it from his back and from hud`
