@@ -1,0 +1,61 @@
+name: Create new release
+on:
+   workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version tag'
+        required: true
+        default: 'vX.X'
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: Archive Mod
+      run: |
+         .\.github\7za.exe -tzip a ".\CarryStackerReloaded.zip" ".\CarryStackerReloaded"
+      shell: powershell
+    - name: Create New Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.event.inputs.version }}
+        release_name: Version ${{ github.event.inputs.version }}
+        draft: false
+        prerelease: false
+    - name: Upload Mod Zip to Release
+      id: upload-release-asset 
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+        asset_path: ./CarryStackerReloaded.zip
+        asset_name: CarryStackerReloaded.zip
+        asset_content_type: application/zip
+    - name: Hash mod and create mod meta file
+      id: create_meta_file
+      run: |
+         $(cat .\.github\metaTemplate.json).Replace("%HASH%", $(./.github/hash.exe "./CarryStackerReloaded").Substring(17)) > ./meta.json
+    - name: Upload meta file to Release
+      id: upload-meta-asset 
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+        asset_path: ./meta.json
+        asset_name: meta.json
+        asset_content_type: application/json
+    - name: Upload changelog file to Release
+      id: upload-changelog-asset 
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+        asset_path: ./.github/Changelog.html
+        asset_name: Changelog.html
+        asset_content_type: text/html

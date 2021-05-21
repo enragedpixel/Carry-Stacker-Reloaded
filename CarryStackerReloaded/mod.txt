@@ -1,0 +1,49 @@
+{
+  "name": "Carry Stacker Reloaded",
+  "description": "Carry Stacker Reloaded - Now both nerfed and better at the same time!",
+  "author": "Lordmau5, enragedpixel, theo-ardouin, m-alorda",
+  "version": "v1.10",
+  "blt_version": 2,
+  "hooks": [
+    {
+      "hook_id": "lib/network/base/clientnetworksession",
+      "script_path": "lua/networkhandler.lua"
+    },
+    {
+      "hook_id": "lib/managers/menumanager",
+      "script_path": "lua/configuration_menu.lua"
+    },
+    {
+      "hook_id": "lib/managers/playermanager",
+      "script_path": "lua/playermanager.lua"
+    },
+    {
+      "hook_id": "lib/units/beings/player/states/playerstandard",
+      "script_path": "lua/playerstandard.lua"
+    },
+    {
+      "hook_id": "lib/units/beings/player/states/playercarry",
+      "script_path": "lua/playercarry.lua"
+    },
+    {
+      "hook_id": "lib/managers/playermanager",
+      "script_path": "lua/antianticheat.lua"
+    },
+    {
+      "hook_id": "lib/units/interactions/interactionext",
+      "script_path": "lua/interactionext.lua"
+    },
+    {
+      "hook_id": "lib/managers/group_ai_states/groupaistatebase",
+      "script_path": "lua/groupaistatebase.lua"
+    }
+  ],
+  "updates": [
+    {
+      "identifier": "carry-stacker-reloaded",
+      "host": {
+        "meta": "https://github.com/enragedpixel/Carry-Stacker-Reloaded/releases/latest/download/meta.json"
+      }
+    }
+  ]
+}

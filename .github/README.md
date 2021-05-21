@@ -1,6 +1,8 @@
 # Carry-Stacker-Reloaded
 Payday 2 BLT Mod
 
+[![Download](img/downloadButton.png)](https://github.com/enragedpixel/Carry-Stacker-Reloaded/releases/latest/download/CarryStackerReloaded.zip)
+
 Have you ever thought  
 *Man... I could get a hold of some more paintings on myself... But I can only carry one.*
 
@@ -31,25 +33,22 @@ If a **client** has the mod, and the host **does NOT** have it, the client won't
 It's the same implementation as in *Keepers* or *Moveable Intimidated Cops*, for example.  
 Thanks to TdlQ for the awesome code :)
 
-[![Download](img/downloadButton.png)](https://github.com/enragedpixel/Carry-Stacker-Reloaded/archive/master.zip)
+[![Download](img/downloadButton.png)](https://github.com/enragedpixel/Carry-Stacker-Reloaded/releases/latest/download/CarryStackerReloaded.zip)
 
-# Changelog:
-- **R9**: Manually enable/disable the mod and chat alerts
-- **R8**: _Offline Only_ and _Stealth Only_ features
-- **R7**: BLT 2.0 Compatibility
-- **R6**: Fix for not being able to properly play the game online (WHO WOULD WANT TO DO SUCH A THING ANYWAY, AM I RIGHT GUYS?... guys...?)  
-
-Also, revamped the config-system a bit. Old config is being deleted, so make sure to change your stuff again :)  
-- **R5**: Fix for duplication. Also, it drops the bags with a proper delay now. 
-- **R4**: Rewrote Power-Throw implementation.  
-It's not double-tap anymore, but rather holding the drop-key down.  
-As long as you hold down the key, you will drop the bags.  
-Upon releasing, you'll stop.  
-- **R3**: Fixed crashes when the host doesn't have the mod, but the client does, and the client tries to pick up bags.  
-- **R2**: Properly loading and saving the config now  
-Added ability to sync the settings with clients, if you're the host. They are only temporary (for the current session) and don't overwrite your own.  
-The host can change them mid-game and they get re-synced :)  
-- **R1**: A fresh start...
+# Changelog
+Click [here](https://htmlpreview.github.io/?https://github.com/enragedpixel/Carry-Stacker-Reloaded/blob/master/.github/Changelog.html) to see the changelog.
 
 # Compatibility Issues
 **The Fixes**: For Carry Stacker Reloaded to work, the fix `remove_bag_from_back_playerman` has been disabled. This fix is, as per the mod's description: `If someone throws a bag then remove it from his back and from hud`
+
+# Acknowledgements
+Special thanks to @HugoZink for creating the awesome [template](https://github.com/HugoZink/PD2AutoUpdateExample) used to for auto-updates.
+
+# Development
+Source code is `CarryStackerReloaded` directory. It needs to be here for autoupdates to work! :)
+
+`install.py` is a python3 util script that will copy the mod's source into `PAYDAY2/mods` directory. Note it will overwrite the mod if its already there. To use it, do not forget to change the `MODS_DIR` variable
+
+To create a new release:
+1. Update the [Changelog](https://github.com/enragedpixel/Carry-Stacker-Reloaded/blob/master/.github/Changelog.html)
+2. Go to [actions](https://github.com/enragedpixel/Carry-Stacker-Reloaded/actions/workflows/release.yml) and run the workflow to create a release. Do not forget to change the version accordingly :)

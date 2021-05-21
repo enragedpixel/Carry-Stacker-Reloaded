@@ -1,0 +1,63 @@
+{
+	"bltcs_common_ok": "Okay",
+
+	"bltcs_options_menu_title" : "Carry Stacker Reloaded",
+	"bltcs_options_menu_desc"  : "Options of Carry Stacker Reloaded",
+
+	"bltcs_button_help_title" : "Help",
+	"bltcs_button_help_desc"  : "Show the help menu",
+
+	"bltcs_help_title": "Carry Stacker Help",
+	"bltcs_help_message": "Carry Stacker has been rewritten almost entirely from scratch.\n\nWhy, you ask?\nWell, let's just say I didn't like the implementation of it before.\n\nThis new version now allows you to carry every type of bag at once.\nAs well, it now features movement penalty!\nThat's right, no more super-OP on this one.\n\nThe system has a bit of math behind it. Think about your full movement speed as 100/100.\nNow, you have a \"Light\" Bag that applies 10% penalty to that. This makes it 90/100, since 10% of the 100 is 10.\nIf you pick up another \"Light\" Bag, it will apply another 10%. This time, to the 90, which makes it 81/100.\n\nThe higher the penalty (Slider in percentage), the lesser the amount of bags you can carry.\nThe default values, for example, allow for a mix of 3 \"Light\" and 3 \"Heavy\" Bags.\nIf your movement speed reaches 25/100, you can't pick up any more bags.\n__________________________________\nThe sliders are for the different types of bags.\n\nLight:\nJewelry, Painting, Coke, Meth, Evidence\n\nMedium:\nMoney, Ammo, Samurai Armor, Equipment Bag, Artifact (Light)\n\nHeavy:\nGold, Person, Weapon, Circuit, Turret, Safe\n\nVery Heavy:\nArtifact (Heavy)\n\nMega Heavy:\nEngine",
+
+	"bltcs_playing_as_client_title" : "Carry Stacker - Client",
+	"bltcs_playing_as_client_message" : "You are currently playing as a client.\nThe Carry Stacker settings are being synced from the host.\nChanges you make in here do not apply for the current heist.",
+
+	"bltcs_button_apply_title" : "Apply",
+	"bltcs_button_apply_desc"  : "Apply the changes (rounds the numbers)",
+
+	"bltcs_button_reset_title" : "Reset",
+	"bltcs_button_reset_desc"  : "Resets the mod options to their default",
+
+	"bltcs_toggle_host_sync_title" : "[HOST] Sync Settings with Clients",
+	"bltcs_toggle_host_sync_desc" : "Send your settings over to the other players if you are the host",
+
+	"bltcs_toggle_enable_title" : "Enabled",
+	"bltcs_toggle_enable_desc" : "Globally enable/disable de mod",
+
+	"bltcs_toggle_stealth_only_title" : "Stealth only",
+	"bltcs_toggle_stealth_only_desc" : "Allows only in stealth mode",
+
+	"bltcs_toggle_offline_only_title" : "Offline only",
+	"bltcs_toggle_offline_only_desc" : "Allows only in offline mode",
+
+	"bltcs_toggle_show_chat_info_title" : "Show chat messages",
+	"bltcs_toggle_show_chat_info_desc" : "Show the mod's chat information messages",
+
+	"bltcs_toggle_debug_title" : "DEBUG",
+	"bltcs_toggle_debug_desc" : "Show mod's logs",
+
+	"bltcs_toggle_repeated_logs_title" : "Repeated logs",
+	"bltcs_toggle_repeated_logs_desc" : "Show log messages that get repeated many times per second (Only if DEBUG is enabled). WARNINIG: THE LOGS WILL USE LOTS OF MEMORY AND PERFORMANCE MIGHT BE GREATLY REDUCED",
+
+	"bltcs_slider_light_title" : "Light Bags",
+	"bltcs_slider_light_desc" : "Define the movement penalty for Light bags",
+
+	"bltcs_slider_medium_title" : "Medium Bags",
+	"bltcs_slider_medium_desc" : "Define the movement penalty for Medium bags",
+
+	"bltcs_slider_heavy_title" : "Heavy Bags",
+	"bltcs_slider_heavy_desc" : "Define the movement penalty for Heavy bags",
+
+	"bltcs_slider_veryheavy_title" : "Very Heavy Bags",
+	"bltcs_slider_veryheavy_desc" : "Define the movement penalty for Very Heavy bags",
+
+	"bltcs_slider_megaheavy_title" : "Mega Heavy Bags",
+	"bltcs_slider_megaheavy_desc" : "Define the movement penalty for Mega Heavy bags",
+
+	"bltcs_stealth_only_alarm_message": "Playing in Stealth-Only mode. The mod wont be disabled until all bags are dropped",
+
+	"bltcs_offline_only_online_message": "Playing in Offline-Only mode. The mod wont be disabled until all bags are dropped",
+
+	"bltcs_disabled_message": "The mod wont be disabled until all bags are dropped"
+}
