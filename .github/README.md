@@ -50,5 +50,6 @@ Source code is `CarryStackerReloaded` directory. It needs to be here for autoupd
 `install.py` is a python3 util script that will copy the mod's source into `PAYDAY2/mods` directory. Note it will overwrite the mod if its already there. To use it, do not forget to change the `MODS_DIR` variable
 
 To create a new release:
-1. Update the [Changelog](https://github.com/enragedpixel/Carry-Stacker-Reloaded/blob/master/.github/Changelog.html)
-2. Go to [actions](https://github.com/enragedpixel/Carry-Stacker-Reloaded/actions/workflows/release.yml) and run the workflow to create a release. Do not forget to change the version accordingly :)
+1. Update mod's version in [mod.txt](https://github.com/enragedpixel/Carry-Stacker-Reloaded/blob/master/CarryStackerReloaded/mod.txt)
+2. Update the [Changelog](https://github.com/enragedpixel/Carry-Stacker-Reloaded/blob/master/.github/Changelog.html)
+3. Go to [actions](https://github.com/enragedpixel/Carry-Stacker-Reloaded/actions/workflows/release.yml) and run the workflow to create a release. Do not forget to set the version tag accordingly :)
