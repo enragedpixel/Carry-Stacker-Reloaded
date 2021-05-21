@@ -17,7 +17,7 @@ MODS_DIR = Path('F:/SteamLibrary/steamapps/common/PAYDAY 2/mods/')
 
 # Using resolve to get an absoule path
 INSTALL_FILE = Path(__file__).resolve()
-DEVELOPMENT_DIR = INSTALL_FILE.parent
+DEVELOPMENT_DIR = INSTALL_FILE.parent / 'CarryStackerReloaded'
 
 
 def copy(src, dest):
