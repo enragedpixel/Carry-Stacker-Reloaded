@@ -637,18 +637,19 @@ Hooks:Add("MenuManagerInitialize",
 
 		MenuCallbackHandler.BLT_CarryStacker_toggleHostSync = function(this, item)
 			BLT_CarryStacker:Log("The player wants to change the value of toggle_host")
-			BLT_CarryStacker:SetSetting("toggle_host", val2bool(item:value()))
+			local value = val2bool(item:value())
+			BLT_CarryStacker:SetSetting("toggle_host", value)
 
-			if BLT_CarryStacker:IsHostSyncEnabled() 
-					and LuaNetworking:IsMultiplayer() 
-					and LuaNetworking:IsHost() then
-				BLT_CarryStacker:Log("Since host sync is enabled and the " ..
-					" player is the host, synchronising config to peers")
-				-- TODO if toggle_host sync is clicked several times in a row
-				-- the game crashes
-				LuaNetworking:SendToPeers("BLT_CarryStacker_AllowMod", 
-					BLT_CarryStacker:IsHostSyncEnabled())
-				BLT_CarryStacker:syncConfigToAll()
+			BLT_CarryStacker.closePauseMenuCallbacks.toggle_host = function()
+				if BLT_CarryStacker:IsHostSyncEnabled() 
+						and LuaNetworking:IsMultiplayer() 
+						and LuaNetworking:IsHost() then
+					BLT_CarryStacker:Log("Since host sync is enabled and the " ..
+						" player is the host, synchronising config to peers")
+					LuaNetworking:SendToPeers("BLT_CarryStacker_AllowMod", 
+						BLT_CarryStacker:IsHostSyncEnabled())
+					BLT_CarryStacker:syncConfigToAll()
+				end
 			end
 		end
 
