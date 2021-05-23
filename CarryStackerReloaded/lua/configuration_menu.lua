@@ -18,6 +18,27 @@ BLT_CarryStacker.STATES = {
 	DISABLED = "disabled"
 }
 --[[
+	NETWORK_MESSAGES is a table.
+
+	It contains the different messages ids that can be exchanged through 
+	the network.
+
+	Its content will be used as constants, and should NOT be MODIFIED 
+	on runtime.
+
+	ALLOW_MOD: Sent by the host to notify other players they can use 
+	the mod
+	REQUEST_MOD_USAGE: Sent to the host, to request using the mod
+	SET_HOST_CONFIG: Sent by the host, to synchronize configuration
+
+	Note: Modifying these ids may break backwards compatibility
+]]
+BLT_CarryStacker.NETWORK_MESSAGES = {
+	ALLOW_MOD = "BLT_CarryStacker_AllowMod",
+	REQUEST_MOD_USAGE = "BLT_CarryStacker_Request",
+	SET_HOST_CONFIG = "BLT_CarryStacker_SyncConfig"
+}
+--[[
 	settings is a table.
 
 	As its name suggests, it will contain the mod's settings. For 
@@ -646,7 +667,8 @@ Hooks:Add("MenuManagerInitialize",
 						and LuaNetworking:IsHost() then
 					BLT_CarryStacker:Log("Since host sync is enabled and the " ..
 						" player is the host, synchronising config to peers")
-					LuaNetworking:SendToPeers("BLT_CarryStacker_AllowMod", 
+					LuaNetworking:SendToPeers(
+						BLT_CarryStacker.NETWORK_MESSAGES.ALLOW_MOD, 
 						BLT_CarryStacker:IsHostSyncEnabled())
 					BLT_CarryStacker:syncConfigToAll()
 				end
