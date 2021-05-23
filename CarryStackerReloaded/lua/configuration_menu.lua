@@ -395,14 +395,24 @@ end
 
 	setting_id is a string.
 	state has to have a value valid for the given setting_id.
+	dest [optional] The table in which to set the setting. 
+		Default: BLT_CarryStacker.settings
 
 	Example:
 		BLT_CarryStacker:SetSetting("toggle_stealth", true)
 ]]
-function BLT_CarryStacker:SetSetting(setting_id, state)
+function BLT_CarryStacker:SetSetting(setting_id, state, dest)
 	BLT_CarryStacker:Log("Request to set " .. tostring(setting_id) .. " to " ..
 		tostring(state))
-	self.settings[setting_id] = state
+	if not dest then
+		dest = self.settings
+	end
+	dest[setting_id] = state
+end
+
+function BLT_CarryStacker:SetMovPenaltySetting(setting_id, state)
+	BLT_CarryStacker:SetSetting(setting_id, state, 
+		BLT_CarryStacker.settings.movement_penalties)
 end
 
 function BLT_CarryStacker:SetRemoteHostSync(state)
@@ -548,18 +558,16 @@ Hooks:Add("MenuManagerInitialize",
 			BLT_CarryStacker:Log("The player requested changing a bag penalty")
 			local _type = item:name():sub(7)
 			local new_value = item:value()
-			BLT_CarryStacker:Log("The new value of " .. _type .. " is " .. 
-				tostring(new_value))
-			BLT_CarryStacker.settings.movement_penalties[_type] = new_value
+			BLT_CarryStacker:SetMovPenaltySetting(_type, new_value)
 			if _type == "light" then
 				BLT_CarryStacker:Log("Since 'light' bag's penality has been " ..
 					"updated, updating 'coke_light' as well")
-				BLT_CarryStacker.settings.movement_penalties.coke_light = new_value
+				BLT_CarryStacker:SetMovPenaltySetting("coke_light", new_value)
 			elseif _type == "heavy" then
 				BLT_CarryStacker:Log("Since 'heavy' bag's penality has been " ..
 					"updated, updating 'being' and 'slightly_very_heavy as well'")
-				BLT_CarryStacker.settings.movement_penalties.being = new_value
-				BLT_CarryStacker.settings.movement_penalties.slightly_very_heavy = new_value
+				BLT_CarryStacker:SetMovPenaltySetting("being", new_value)
+				BLT_CarryStacker:SetMovPenaltySetting("slightly_very_heavy", new_value)
 			end
 		end	
 
