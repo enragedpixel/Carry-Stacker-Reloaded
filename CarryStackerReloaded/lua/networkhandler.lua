@@ -4,30 +4,42 @@ Hooks:Add("NetworkReceivedData",
 	"NetworkReceivedData_BLT_CarryStacker", 
 	function(sender, id, data)
 		if id == BLT_CarryStacker.NETWORK_MESSAGES.ALLOW_MOD then
-			BLT_CarryStacker:Log("Received a request to allow the mod")
-			BLT_CarryStacker:HostAllowsMod()
-			BLT_CarryStacker:SetRemoteHostSync(data == 1)
+			BLT_CarryStacker:handleAllowModMessage(data)
 		elseif id == BLT_CarryStacker.NETWORK_MESSAGES.REQUEST_MOD_USAGE then
-			BLT_CarryStacker:Log("Received a request to use the mod")
-			LuaNetworking:SendToPeer(sender, 
-				BLT_CarryStacker.NETWORK_MESSAGES.ALLOW_MOD, 
-				BLT_CarryStacker:IsHostSyncEnabled() and 1 or 0)
-
-			if BLT_CarryStacker:IsHostSyncEnabled() then
-				BLT_CarryStacker:syncConfigToClient(sender)
-			end
+			BLT_CarryStacker:handleRequestMessage(sender)
 		elseif id == BLT_CarryStacker.NETWORK_MESSAGES.SET_HOST_CONFIG then
-			BLT_CarryStacker:Log("Received a request to update mod settings")
-			local penalty_split = split(tostring(data), ":")
-			local carry_type = penalty_split[1]
-			if type(penalty_split[2]) ~= "number" then return end
-
-			local penalty = tonumber(penalty_split[2])
-
-			BLT_CarryStacker:setHostMovementPenalty(carry_type, penalty)
+			BLT_CarryStacker:handleSetHostConfig(data)
 		end
 	end
 )
+
+function BLT_CarryStacker:handleAllowModMessage(data)
+	BLT_CarryStacker:Log("Received a request to allow the mod")
+	BLT_CarryStacker:HostAllowsMod()
+	BLT_CarryStacker:SetRemoteHostSync(data == 1)
+end
+
+function BLT_CarryStacker:handleRequestMessage(sender)
+	BLT_CarryStacker:Log("Received a request to use the mod")
+	LuaNetworking:SendToPeer(sender, 
+		BLT_CarryStacker.NETWORK_MESSAGES.ALLOW_MOD, 
+		BLT_CarryStacker:IsHostSyncEnabled() and 1 or 0)
+
+	if BLT_CarryStacker:IsHostSyncEnabled() then
+		BLT_CarryStacker:syncConfigToClient(sender)
+	end
+end
+
+function BLT_CarryStacker:handleSetHostConfig(data)
+	BLT_CarryStacker:Log("Received a request to update mod settings")
+	local penalty_split = split(tostring(data), ":")
+	local carry_type = penalty_split[1]
+	if type(penalty_split[2]) ~= "number" then return end
+
+	local penalty = tonumber(penalty_split[2])
+
+	BLT_CarryStacker:setHostMovementPenalty(carry_type, penalty)
+end
 
 function BLT_CarryStacker:syncConfigToClient(peer_id)
 	BLT_CarryStacker:Log("Request to sync configuration to " .. tostring(peer_id))
