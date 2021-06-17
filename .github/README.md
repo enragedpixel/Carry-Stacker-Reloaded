@@ -36,7 +36,7 @@ Thanks to TdlQ for the awesome code :)
 [![Download](img/downloadButton.png)](https://github.com/enragedpixel/Carry-Stacker-Reloaded/releases/latest/download/CarryStackerReloaded.zip)
 
 # Changelog
-Click [here](https://htmlpreview.github.io/?https://github.com/enragedpixel/Carry-Stacker-Reloaded/blob/master/.github/Changelog.html) to see the changelog.
+Click [here](https://htmlpreview.github.io/?https://github.com/enragedpixel/Carry-Stacker-Reloaded/blob/master/.github/Changelog.md) to see the changelog.
 
 # Compatibility Issues
 **The Fixes**: For Carry Stacker Reloaded to work, the fix `remove_bag_from_back_playerman` has been disabled. This fix is, as per the mod's description: `If someone throws a bag then remove it from his back and from hud`
@@ -51,5 +51,5 @@ Source code is `CarryStackerReloaded` directory. It needs to be here for autoupd
 
 To create a new release:
 1. Update mod's version in [mod.txt](https://github.com/enragedpixel/Carry-Stacker-Reloaded/blob/master/CarryStackerReloaded/mod.txt)
-2. Update the [Changelog](https://github.com/enragedpixel/Carry-Stacker-Reloaded/blob/master/.github/Changelog.html)
+2. Update the [Changelog](https://github.com/enragedpixel/Carry-Stacker-Reloaded/blob/master/.github/Changelog.md)
 3. Go to [actions](https://github.com/enragedpixel/Carry-Stacker-Reloaded/actions/workflows/release.yml) and run the workflow to create a release. Do not forget to set the version tag accordingly :)
