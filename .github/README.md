@@ -36,7 +36,7 @@ Thanks to TdlQ for the awesome code :)
 [![Download](img/downloadButton.png)](https://github.com/enragedpixel/Carry-Stacker-Reloaded/releases/latest/download/CarryStackerReloaded.zip)
 
 # Changelog
-Click [here](https://htmlpreview.github.io/?https://github.com/enragedpixel/Carry-Stacker-Reloaded/blob/master/.github/Changelog.md) to see the changelog.
+Click [here](https://github.com/enragedpixel/Carry-Stacker-Reloaded/blob/master/.github/Changelog.md) to see the changelog.
 
 # Compatibility Issues
 **The Fixes**: For Carry Stacker Reloaded to work, the fix `remove_bag_from_back_playerman` has been disabled. This fix is, as per the mod's description: `If someone throws a bag then remove it from his back and from hud`
