@@ -2,7 +2,8 @@
   "name": "Carry Stacker Reloaded",
   "description": "Carry Stacker Reloaded - Now both nerfed and better at the same time!",
   "author": "Lordmau5, enragedpixel, theo-ardouin, m-alorda",
-  "version": "v1.10.1",
+  "contact": "https://github.com/enragedpixel/Carry-Stacker-Reloaded/issues"
+  "version": "v1.10.2",
   "blt_version": 2,
   "hooks": [
     {
