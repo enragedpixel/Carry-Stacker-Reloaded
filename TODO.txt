@@ -1,0 +1,9 @@
+Should show a message to the user whenever a setting is remotely syncronized
+
+Within the game's menu, if the player is not the host, and settings are being remotely syncronized, the user should be able to see the actual settings being applied. (Maybe add a button that creates a popup showing all applied values? This would work for both the host and other players whose settings are synchronized. This pop up could also show that the mod is disabled if the host does not have CarryStacker)
+
+There is a new state: The host cannot disable the mod completely until all client have disabled it. Otherwise, the game would probably detect them as cheating when throwing their remaining bags.
+
+Remote host sync should be removed. The host's configuration shall always be used in clients
+
+When receiveing a client message, if the hosts version if higher than out current networking version, show a message to the client to them to be aware certain functionality might not work correctly

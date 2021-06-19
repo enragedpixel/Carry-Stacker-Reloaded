@@ -18,27 +18,6 @@ BLT_CarryStacker.STATES = {
 	DISABLED = "disabled"
 }
 --[[
-	NETWORK_MESSAGES is a table.
-
-	It contains the different messages ids that can be exchanged through 
-	the network.
-
-	Its content will be used as constants, and should NOT be MODIFIED 
-	on runtime.
-
-	ALLOW_MOD: Sent by the host to notify other players they can use 
-	the mod
-	REQUEST_MOD_USAGE: Sent to the host, to request using the mod
-	SET_HOST_CONFIG: Sent by the host, to synchronize configuration
-
-	Note: Modifying these ids may break backwards compatibility
-]]
-BLT_CarryStacker.NETWORK_MESSAGES = {
-	ALLOW_MOD = "BLT_CarryStacker_AllowMod",
-	REQUEST_MOD_USAGE = "BLT_CarryStacker_Request",
-	SET_HOST_CONFIG = "BLT_CarryStacker_SyncConfig"
-}
---[[
 	settings is a table.
 
 	As its name suggests, it will contain the mod's settings. For 
@@ -88,6 +67,15 @@ BLT_CarryStacker.host_settings = {
 		By default, the mod wont be used on an online lobby.
 	]]
 	is_mod_allowed = false,
+	--[[
+		is_stealth_only is a boolean variable .
+
+		It controls whether the mod	should be only on stealth, or also
+		once heists go loud.
+
+		By default, the mod can be used on loud.
+	]]
+	is_stealth_only = false,
 	--[[
 		remote_host_sync is a boolean variable.
 
@@ -433,9 +421,15 @@ function BLT_CarryStacker:IsHostSyncEnabled()
 end
 
 function BLT_CarryStacker:IsStealthOnly()
-	BLT_CarryStacker:RLog("Request to return settings.toggle_stealth. Its value " ..
-		"is " .. tostring(self.settings.toggle_stealth))
-	return self.settings.toggle_stealth
+	if LuaNetworking:IsHost() then
+		BLT_CarryStacker:RLog("Request to return host_settings.is_stealth_only. " ..
+			"Its value is " .. tostring(self.host_settings.is_stealth_only))
+		return self.host_settings.is_stealth_only
+	else
+		BLT_CarryStacker:RLog("Request to return settings.toggle_stealth. " ..
+			"Its value is " .. tostring(self.settings.toggle_stealth))
+		return self.settings.toggle_stealth
+	end
 end
 
 function BLT_CarryStacker:IsOfflineOnly()
@@ -668,19 +662,6 @@ Hooks:Add("MenuManagerInitialize",
 			BLT_CarryStacker:Log("The player wants to change the value of toggle_host")
 			local value = val2bool(item:value())
 			BLT_CarryStacker:SetSetting("toggle_host", value)
-
-			BLT_CarryStacker.closePauseMenuCallbacks.toggle_host = function()
-				if BLT_CarryStacker:IsHostSyncEnabled() 
-						and LuaNetworking:IsMultiplayer() 
-						and LuaNetworking:IsHost() then
-					BLT_CarryStacker:Log("Since host sync is enabled and the " ..
-						" player is the host, synchronising config to peers")
-					LuaNetworking:SendToPeers(
-						BLT_CarryStacker.NETWORK_MESSAGES.ALLOW_MOD, 
-						BLT_CarryStacker:IsHostSyncEnabled())
-					BLT_CarryStacker:syncConfigToAll()
-				end
-			end
 		end
 
 		MenuCallbackHandler.BLT_CarryStacker_toggleStealthOnly = function(this, item)
