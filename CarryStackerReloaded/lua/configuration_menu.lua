@@ -18,6 +18,27 @@ BLT_CarryStacker.STATES = {
 	DISABLED = "disabled"
 }
 --[[
+	NETWORK_MESSAGES is a table.
+
+	It contains the different messages ids that can be exchanged through 
+	the network.
+
+	Its content will be used as constants, and should NOT be MODIFIED 
+	on runtime.
+
+	ALLOW_MOD: Sent by the host to notify other players they can use 
+	the mod
+	REQUEST_MOD_USAGE: Sent to the host, to request using the mod
+	SET_HOST_CONFIG: Sent by the host, to synchronize configuration
+
+	Note: Modifying these ids may break backwards compatibility
+]]
+BLT_CarryStacker.NETWORK_MESSAGES = {
+	ALLOW_MOD = "BLT_CarryStacker_AllowMod",
+	REQUEST_MOD_USAGE = "BLT_CarryStacker_Request",
+	SET_HOST_CONFIG = "BLT_CarryStacker_SyncConfig"
+}
+--[[
 	settings is a table.
 
 	As its name suggests, it will contain the mod's settings. For 
@@ -374,14 +395,24 @@ end
 
 	setting_id is a string.
 	state has to have a value valid for the given setting_id.
+	dest [optional] The table in which to set the setting. 
+		Default: BLT_CarryStacker.settings
 
 	Example:
 		BLT_CarryStacker:SetSetting("toggle_stealth", true)
 ]]
-function BLT_CarryStacker:SetSetting(setting_id, state)
+function BLT_CarryStacker:SetSetting(setting_id, state, dest)
 	BLT_CarryStacker:Log("Request to set " .. tostring(setting_id) .. " to " ..
 		tostring(state))
-	self.settings[setting_id] = state
+	if not dest then
+		dest = self.settings
+	end
+	dest[setting_id] = state
+end
+
+function BLT_CarryStacker:SetMovPenaltySetting(setting_id, state)
+	BLT_CarryStacker:SetSetting(setting_id, state, 
+		BLT_CarryStacker.settings.movement_penalties)
 end
 
 function BLT_CarryStacker:SetRemoteHostSync(state)
@@ -527,18 +558,16 @@ Hooks:Add("MenuManagerInitialize",
 			BLT_CarryStacker:Log("The player requested changing a bag penalty")
 			local _type = item:name():sub(7)
 			local new_value = item:value()
-			BLT_CarryStacker:Log("The new value of " .. _type .. " is " .. 
-				tostring(new_value))
-			BLT_CarryStacker.settings.movement_penalties[_type] = new_value
+			BLT_CarryStacker:SetMovPenaltySetting(_type, new_value)
 			if _type == "light" then
 				BLT_CarryStacker:Log("Since 'light' bag's penality has been " ..
 					"updated, updating 'coke_light' as well")
-				BLT_CarryStacker.settings.movement_penalties.coke_light = new_value
+				BLT_CarryStacker:SetMovPenaltySetting("coke_light", new_value)
 			elseif _type == "heavy" then
 				BLT_CarryStacker:Log("Since 'heavy' bag's penality has been " ..
 					"updated, updating 'being' and 'slightly_very_heavy as well'")
-				BLT_CarryStacker.settings.movement_penalties.being = new_value
-				BLT_CarryStacker.settings.movement_penalties.slightly_very_heavy = new_value
+				BLT_CarryStacker:SetMovPenaltySetting("being", new_value)
+				BLT_CarryStacker:SetMovPenaltySetting("slightly_very_heavy", new_value)
 			end
 		end	
 
@@ -637,18 +666,20 @@ Hooks:Add("MenuManagerInitialize",
 
 		MenuCallbackHandler.BLT_CarryStacker_toggleHostSync = function(this, item)
 			BLT_CarryStacker:Log("The player wants to change the value of toggle_host")
-			BLT_CarryStacker:SetSetting("toggle_host", val2bool(item:value()))
+			local value = val2bool(item:value())
+			BLT_CarryStacker:SetSetting("toggle_host", value)
 
-			if BLT_CarryStacker:IsHostSyncEnabled() 
-					and LuaNetworking:IsMultiplayer() 
-					and LuaNetworking:IsHost() then
-				BLT_CarryStacker:Log("Since host sync is enabled and the " ..
-					" player is the host, synchronising config to peers")
-				-- TODO if toggle_host sync is clicked several times in a row
-				-- the game crashes
-				LuaNetworking:SendToPeers("BLT_CarryStacker_AllowMod", 
-					BLT_CarryStacker:IsHostSyncEnabled())
-				BLT_CarryStacker:syncConfigToAll()
+			BLT_CarryStacker.closePauseMenuCallbacks.toggle_host = function()
+				if BLT_CarryStacker:IsHostSyncEnabled() 
+						and LuaNetworking:IsMultiplayer() 
+						and LuaNetworking:IsHost() then
+					BLT_CarryStacker:Log("Since host sync is enabled and the " ..
+						" player is the host, synchronising config to peers")
+					LuaNetworking:SendToPeers(
+						BLT_CarryStacker.NETWORK_MESSAGES.ALLOW_MOD, 
+						BLT_CarryStacker:IsHostSyncEnabled())
+					BLT_CarryStacker:syncConfigToAll()
+				end
 			end
 		end
 
