@@ -50,6 +50,7 @@ function CarryInteractionExt:can_select(player)
 
 	BLT_CarryStacker:RLog("Calling super's can select")
 	local result = CarryInteractionExt.super.can_select(self, player)
+		and managers.player:can_carry(self._unit:carry_data():carry_id())
 	BLT_CarryStacker:RLog("The super's can_select result is: " .. tostring(result))
 	return result
 end
