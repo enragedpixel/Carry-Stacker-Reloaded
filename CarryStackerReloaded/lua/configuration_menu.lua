@@ -677,7 +677,7 @@ Hooks:Add("MenuManagerInitialize",
 						" player is the host, synchronising config to peers")
 					LuaNetworking:SendToPeers(
 						BLT_CarryStacker.NETWORK_MESSAGES.ALLOW_MOD, 
-						BLT_CarryStacker:IsHostSyncEnabled())
+						BLT_CarryStacker:IsHostSyncEnabled() and 1 or 0)
 					BLT_CarryStacker:syncConfigToAll()
 				end
 			end
