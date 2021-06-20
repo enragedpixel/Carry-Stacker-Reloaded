@@ -413,6 +413,7 @@ end
 function BLT_CarryStacker:SetMovPenaltySetting(setting_id, state)
 	BLT_CarryStacker:SetSetting(setting_id, state, 
 		BLT_CarryStacker.settings.movement_penalties)
+	BLT_CarryStacker:RecalculateWeightOnMenuClose()
 end
 
 function BLT_CarryStacker:SetRemoteHostSync(state)
@@ -521,6 +522,23 @@ function BLT_CarryStacker:HudRefresh()
 	end
 end
 
+function BLT_CarryStacker:RecalculateWeightOnMenuClose()
+	if #BLT_CarryStacker.stack > 0 
+			and not BLT_CarryStacker.closePauseMenuCallbacks.recalculateWeight then
+        BLT_CarryStacker.closePauseMenuCallbacks.recalculateWeight = function()
+		    BLT_CarryStacker:Log("Bag penalties have been changed " ..
+		        "while carrying bags. Recalculating self.weight")
+		    BLT_CarryStacker.weight = 1
+		    for i, cdata in pairs(BLT_CarryStacker.stack) do
+		        BLT_CarryStacker.weight = BLT_CarryStacker.weight
+		            * BLT_CarryStacker:getWeightForType(cdata.carry_id)
+		    end
+		    BLT_CarryStacker:Log("Resulting weight is: " .. 
+		        tostring(BLT_CarryStacker.weight))
+		end
+    end
+end
+
 Hooks:Add("LocalizationManagerPostInit", 
 	"LocalizationManagerPostInit_BLT_CarryStacker", 
 	function(loc)
@@ -576,6 +594,7 @@ Hooks:Add("MenuManagerInitialize",
 			BLT_CarryStacker:Log("The player requested resetting setting " ..
 				"to their default")
 			BLT_CarryStacker:ResetSettings()
+			BLT_CarryStacker:RecalculateWeightOnMenuClose()
 
 			-- Bag weights
 			MenuHelper:ResetItemsToDefaultValue(item, {bltcs_light = true}, 
