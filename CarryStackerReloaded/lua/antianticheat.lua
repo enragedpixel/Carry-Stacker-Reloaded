@@ -8,11 +8,12 @@
 	Returns either the result of master_function or true
 ]]
 function doAntiAntiCheat(master_function, ...)
-	BLT_CarryStacker:Log("Request to do the antianticheat procedure")
+	local logger = BLT_CarryStacker.Log
+	logger("Request to do the antianticheat procedure")
 	if BLT_CarryStacker:GetModState() == BLT_CarryStacker.STATES.DISABLED then
 		return BLT_CarryStacker:DoMasterFunction(false, master_function, ...)
 	end
-	BLT_CarryStacker:Log("The mod is enabled. Returning true")
+	logger("The mod is enabled. Returning true")
 	return true
 end
 
@@ -24,7 +25,8 @@ end
 ]]
 local master_PlayerManager_verify_carry = PlayerManager.verify_carry
 function PlayerManager:verify_carry(peer, carry_id)
-	BLT_CarryStacker:Log("Request to verify carry")
+	local logger = BLT_CarryStacker.Log
+	logger("Request to verify carry")
 	return doAntiAntiCheat(master_PlayerManager_verify_carry, self, peer, carry_id)
 end
 
@@ -35,6 +37,7 @@ end
 ]]
 local master_PlayerManager_register_carry = PlayerManager.register_carry
 function PlayerManager:register_carry(peer, carry_id)
-	BLT_CarryStacker:Log("Request to register carry")
+	local logger = BLT_CarryStacker.Log
+	logger("Request to register carry")
 	return doAntiAntiCheat(master_PlayerManager_register_carry, self, peer, carry_id)
 end

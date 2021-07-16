@@ -135,8 +135,8 @@ end
 
 	The mod's logs are preceded by "[BLTCS]"
 ]]
-function BLT_CarryStacker:Log(message, caller_function_level)
-	if self.settings.toggle_debug then
+function BLT_CarryStacker.Log(message, caller_function_level)
+	if BLT_CarryStacker.settings.toggle_debug then
 		local level = caller_function_level and caller_function_level or 2
 		local function_name = debug.getinfo(level).name
 		log("[BLTCS] - " .. function_name .. " - " .. message)
@@ -152,9 +152,9 @@ end
 
 	message has to be a string.
 ]]
-function BLT_CarryStacker:RLog(message)
-	if self.settings.toggle_repeated_logs then
-		BLT_CarryStacker:Log(message, 3)
+function BLT_CarryStacker.RLog(message)
+	if BLT_CarryStacker.settings.toggle_repeated_logs then
+		BLT_CarryStacker.Log(message, 3)
 	end
 end
 
@@ -165,9 +165,10 @@ end
 		"bltcs_stealth_only_alarm_message"
 ]]
 function BLT_CarryStacker:ShowInfoMessage(messageId)
-	BLT_CarryStacker:Log("Request to show info message with id " .. messageId)
+	local logger = BLT_CarryStacker.Log
+	logger("Request to show info message with id " .. messageId)
 	if not self.settings.toggle_show_chat_info then
-		BLT_CarryStacker:Log("The player does not want messages to be shown. Returning")
+		logger("The player does not want messages to be shown. Returning")
 		return
 	end
 	local messageSenderName = "CARRY STACKER"
@@ -180,7 +181,7 @@ end
 	A higher order function to log the result of master_function
 
 	useRLog is a boolean value indicating whether the function should
-		use BLT_CarryStacker:Log or BLT_CarryStacker:RLog
+		use BLT_CarryStacker.Log or BLT_CarryStacker.RLog
 	master_function has to be a function
 	All other arguments passed to this function will be passed to 
 	master_function
@@ -188,16 +189,10 @@ end
 	Returns the master's function return value
 ]]
 function BLT_CarryStacker:DoMasterFunction(useRLog, master_function, ...)
-	local doMasterFunctionLogger = function(message)
-		if useRLog then
-			self:RLog(message)
-		else
-			self:Log(message)
-		end
-	end
-	doMasterFunctionLogger("The mod is not enabled. Using master function")
+	local logger = userRLog and BLT_CarryStacker.RLog or BLT_CarryStacker.Log
+	logger("The mod is not enabled. Using master function")
 	local result = master_function(...)
-	doMasterFunctionLogger("The master's function result is " .. tostring(result))
+	logger("The master's function result is " .. tostring(result))
 	return result
 end
 
@@ -205,7 +200,8 @@ end
 	Load the Mod's settings from the data file.
 ]]
 function BLT_CarryStacker:Load()
-	BLT_CarryStacker:Log("Loading settings")
+	local logger = BLT_CarryStacker.Log
+	logger("Loading settings")
 	self:ResetSettings()
 
 	local file = io.open(self._data_path, "r")
@@ -218,7 +214,7 @@ function BLT_CarryStacker:Load()
 			if k == "movement_penalties" then foundMP = true end
 		end
 		file:close()
-	BLT_CarryStacker:Log("Settings loaded")
+	logger("Settings loaded")
 
 		if not foundMP then
 			os.remove(self._data_path)
@@ -231,12 +227,13 @@ end
 	Save the Mod's settings into the data file.
 ]]
 function BLT_CarryStacker:Save()
-	BLT_CarryStacker:Log("Saving settings")
+	local logger = BLT_CarryStacker.Log
+	logger("Saving settings")
 	local file = io.open(self._data_path, "w+")
 	if file then
 		file:write(json.encode(self.settings))
 		file:close()
-		BLT_CarryStacker:Log("Settings saved")
+		logger("Settings saved")
 	end
 end
 
@@ -247,7 +244,8 @@ end
 	ones.
 ]]
 function BLT_CarryStacker:ResetSettings()
-	BLT_CarryStacker:Log("Resetting settings to their default values")
+	local logger = BLT_CarryStacker.Log
+	logger("Resetting settings to their default values")
 	self.settings.movement_penalties = {
 		light = 10,
 		coke_light = 10,
@@ -267,14 +265,15 @@ function BLT_CarryStacker:ResetSettings()
 	self.settings.toggle_debug = false
 	self.settings.toggle_repeated_logs = false
 	self.host_settings.movement_penalties = {}
-	BLT_CarryStacker:Log("Settings resetted")
+	logger("Settings resetted")
 end
 
 --[[
 	Return the table of local movement penalties
 ]]
 function BLT_CarryStacker:getLocalMovementPenalties()
-	BLT_CarryStacker:Log("Request to get local movement penalties")
+	local logger = BLT_CarryStacker.Log
+	logger("Request to get local movement penalties")
 	return self.settings.movement_penalties
 end
 
@@ -288,11 +287,11 @@ end
 		BLT_CarryStacker.setHostMovementPenalty("light", 15)
 ]]
 function BLT_CarryStacker:setHostMovementPenalty(carry_type, penalty)
-	BLT_CarryStacker:Log("Request to set the host movement penalty of " .. 
+	local logger = BLT_CarryStacker.Log
+	logger("Request to set the host movement penalty of " .. 
 		tostring(carry_type) .. " to " .. tostring(penalty))
 	if not self.settings.movement_penalties[carry_type] then
-		BLT_CarryStacker:Log("ERROR: There is no \"" .. 
-			tostring(carry_type) .. "\" type.")
+		logger("ERROR: There is no \"" .. tostring(carry_type) .. "\" type.")
 		return
 	end
 	self.host_settings.movement_penalties[carry_type] = penalty
@@ -314,24 +313,25 @@ end
 
 		Note: the returned value is 10 according to default settings
 ]]
-function BLT_CarryStacker:getWeightForType(carry_id)
-	BLT_CarryStacker:Log("Request to get the weight of carry " .. 
+function BLT_CarryStacker:getWeightForType(carry_id, logger)
+	logger = logger or BLT_CarryStacker.Log
+	logger("Request to get the weight of carry " .. 
 		tostring(carry_id))
 	local carry_type = tweak_data.carry[carry_id].type
 	local movement_penalty = nil
 	if LuaNetworking:IsMultiplayer() 
 			and not LuaNetworking:IsHost() 
 			and self:IsRemoteHostSyncEnabled() then
-		BLT_CarryStacker:Log("Using host's movement penalties")
+		logger("Using host's movement penalties")
 		movement_penalty = self.host_settings.movement_penalties[carry_type]
 	else
-		BLT_CarryStacker:Log("Using local movement penalties")
+		logger("Using local movement penalties")
 		movement_penalty = self.settings.movement_penalties[carry_type]
 	end
 	local result = movement_penalty ~= nil 
 		and ((100 -movement_penalty) / 100) 
 		or 1
-	BLT_CarryStacker:Log("The resulting weight is " .. tostring(result))
+	logger("The resulting weight is " .. tostring(result))
 	return result
 end
 
@@ -339,7 +339,8 @@ end
 	Set the mod to be allowed in online games not hosted by this client
 ]]
 function BLT_CarryStacker:HostAllowsMod()
-	BLT_CarryStacker:Log("Request to set host_settings.is_mod_allowed to true")
+	local logger = BLT_CarryStacker.Log
+	logger("Request to set host_settings.is_mod_allowed to true")
 	self.host_settings.is_mod_allowed = true
 end
 
@@ -348,7 +349,8 @@ end
 	client
 ]]
 function BLT_CarryStacker:HostDisallowsMod()
-	BLT_CarryStacker:Log("Request to set host_settings.is_mod_allowed to false")
+	local logger = BLT_CarryStacker.Log
+	logger("Request to set host_settings.is_mod_allowed to false")
 	self.host_settings.is_mod_allowed = false
 end
 
@@ -359,34 +361,35 @@ end
 	table.
 ]]
 function BLT_CarryStacker:GetModState()
-	BLT_CarryStacker:RLog("Request to get the mod's state")
+	local logger = BLT_CarryStacker.RLog
+	logger("Request to get the mod's state")
 	local result = self.STATES.DISABLED
 	-- Unable to use if online and offline only is toggled
 	if self:IsOfflineOnly() and not Global.game_settings.single_player then
-		BLT_CarryStacker:RLog("The mod is configured to be used only on " ..
+		logger("The mod is configured to be used only on " ..
 			"offline, but it is multiplayer. The mod is disabled")
 		result = self.STATES.DISABLED
 	elseif self:IsStealthOnly() 
 			and not managers.groupai:state():whisper_mode() then
-		BLT_CarryStacker:RLog("The mod is configured to be used only during " ..
+		logger("The mod is configured to be used only during " ..
 			"stealth, and it is loud. The mod is disabled")
 		result = self.STATES.DISABLED
 	elseif LuaNetworking:IsHost() then
-		BLT_CarryStacker:RLog("The player is the host. The mod is enabled")
+		logger("The player is the host. The mod is enabled")
 		result = self.settings.toggle_enable and self.STATES.ENABLED or self.STATES.DISABLED
 	else
-		BLT_CarryStacker:RLog("The player is not the host. Using the host's " ..
+		logger("The player is not the host. Using the host's " ..
 			"configuration")
 		result = self.host_settings.is_mod_allowed and self.STATES.ENABLED or self.STATES.DISABLED
 	end
 
 	if result == self.STATES.DISABLED and #self.stack > 0 then
-		BLT_CarryStacker:RLog("The mod is to be disabled, but there still " ..
+		logger("The mod is to be disabled, but there still " ..
 			"are bags in the stack")
 		result = self.STATES.BEING_DISABLED
 	end
 
-	BLT_CarryStacker:RLog("The mod is: " .. tostring(result))
+	logger("The mod is: " .. tostring(result))
 	return result
 end
 
@@ -402,7 +405,8 @@ end
 		BLT_CarryStacker:SetSetting("toggle_stealth", true)
 ]]
 function BLT_CarryStacker:SetSetting(setting_id, state, dest)
-	BLT_CarryStacker:Log("Request to set " .. tostring(setting_id) .. " to " ..
+	local logger = BLT_CarryStacker.Log
+	logger("Request to set " .. tostring(setting_id) .. " to " ..
 		tostring(state))
 	if not dest then
 		dest = self.settings
@@ -417,30 +421,35 @@ function BLT_CarryStacker:SetMovPenaltySetting(setting_id, state)
 end
 
 function BLT_CarryStacker:SetRemoteHostSync(state)
-	BLT_CarryStacker:Log("Request to set remote_host_sync to " .. tostring(state))
+	local logger = BLT_CarryStacker.Log
+	logger("Request to set remote_host_sync to " .. tostring(state))
 	self.host_settings.remote_host_sync = state
 end
 
 function BLT_CarryStacker:IsRemoteHostSyncEnabled()
-	BLT_CarryStacker:Log("Request to return host_settings.remote_host_sync. " ..
+	local logger = BLT_CarryStacker.Log
+	logger("Request to return host_settings.remote_host_sync. " ..
 		"Its value is " .. tostring(self.host_settings.remote_host_sync))
 	return self.host_settings.remote_host_sync
 end 
 
 function BLT_CarryStacker:IsHostSyncEnabled()
-	BLT_CarryStacker:Log("Request to return settings.toggle_host. Its value " ..
+	local logger = BLT_CarryStacker.Log
+	logger("Request to return settings.toggle_host. Its value " ..
 		"is " .. tostring(self.settings.toggle_host))
 	return self.settings.toggle_host
 end
 
 function BLT_CarryStacker:IsStealthOnly()
-	BLT_CarryStacker:RLog("Request to return settings.toggle_stealth. Its value " ..
+	local logger = BLT_CarryStacker.RLog
+	logger("Request to return settings.toggle_stealth. Its value " ..
 		"is " .. tostring(self.settings.toggle_stealth))
 	return self.settings.toggle_stealth
 end
 
 function BLT_CarryStacker:IsOfflineOnly()
-	BLT_CarryStacker:RLog("Request to return settings.toggle_online. Its value " ..
+	local logger = BLT_CarryStacker.RLog
+	logger("Request to return settings.toggle_online. Its value " ..
 		"is " .. tostring(self.settings.toggle_offline))
 	return self.settings.toggle_offline
 end
@@ -452,18 +461,19 @@ end
 
 	The return type is a boolean value.
 ]]
-function BLT_CarryStacker:CanCarry(carry_id)
-	BLT_CarryStacker:Log("Request to check whether the player can " ..
+function BLT_CarryStacker:CanCarry(carry_id, logger)
+	logger = logger or BLT_CarryStacker.Log
+	logger("Request to check whether the player can " ..
 		"carry " .. tostring(carry_id))
 	if self:GetModState() == self.STATES.BEING_DISABLED then
-		BLT_CarryStacker:Log("The mod is being disabled. Cannot carry more bags")
+		logger("The mod is being disabled. Cannot carry more bags")
 		return false
 	end
-	local check_weight = self.weight * self:getWeightForType(carry_id)
-	BLT_CarryStacker:Log("The current weight is " .. tostring(self.weight) .. 
+	local check_weight = self.weight * self:getWeightForType(carry_id, logger)
+	logger("The current weight is " .. tostring(self.weight) .. 
 		" and the new weight is " .. tostring(check_weight))
 	local result = check_weight >= 0.25
-	BLT_CarryStacker:Log("The player can carry a bag: " .. tostring(result))
+	logger("The player can carry a bag: " .. tostring(result))
 	return result
 end
 
@@ -471,10 +481,11 @@ end
 	Add to the top of the stack the carry cdata.
 ]]
 function BLT_CarryStacker:AddCarry(cdata)
-	BLT_CarryStacker:Log("Request to add the carry " .. tostring(cdata.carry_id))
-	BLT_CarryStacker:Log("The previous weight was " .. tostring(self.weight))
+	local logger = BLT_CarryStacker.Log
+	logger("Request to add the carry " .. tostring(cdata.carry_id))
+	logger("The previous weight was " .. tostring(self.weight))
 	self.weight = self.weight * self:getWeightForType(cdata.carry_id)
-	BLT_CarryStacker:Log("The new weight is " .. tostring(self.weight))
+	logger("The new weight is " .. tostring(self.weight))
 	table.insert(self.stack, cdata)
 	self:HudRefresh()
 end
@@ -485,19 +496,20 @@ end
 	If the stack is empty, it returns nil.
 ]]
 function BLT_CarryStacker:RemoveCarry()
-	BLT_CarryStacker:Log("Request to remove the top-most carry from the stack")
+	local logger = BLT_CarryStacker.Log
+	logger("Request to remove the top-most carry from the stack")
 	if #self.stack == 0 then
-		BLT_CarryStacker:Log("The stack is empty. Returning")
+		logger("The stack is empty. Returning")
 		return nil
 	end
 	local cdata = self.stack[#self.stack]
-	BLT_CarryStacker:Log("The top-most item is: " .. tostring(cdata.carry_id))
-	BLT_CarryStacker:Log("The previous weight was " .. tostring(self.weight))
+	logger("The top-most item is: " .. tostring(cdata.carry_id))
+	logger("The previous weight was " .. tostring(self.weight))
 	self.weight = self.weight / self:getWeightForType(cdata.carry_id)
-	BLT_CarryStacker:Log("The new weight is " .. tostring(self.weight))
+	logger("The new weight is " .. tostring(self.weight))
 	table.remove(self.stack, #self.stack)
 	if #self.stack == 0 then
-		BLT_CarryStacker:Log("The stack is empty. Setting the weight to 1")
+		logger("The stack is empty. Setting the weight to 1")
 		self.weight = 1
 	end
 	self:HudRefresh()
@@ -509,10 +521,11 @@ end
 	carried by the player
 ]]
 function BLT_CarryStacker:HudRefresh()
-	BLT_CarryStacker:Log("Request to refresh the HUD")
+	local logger = BLT_CarryStacker.Log
+	logger("Request to refresh the HUD")
 	managers.hud:remove_special_equipment("carrystacker")
 	if #self.stack > 0 then
-		BLT_CarryStacker:Log("There are items in the stack. Adding the "
+		logger("There are items in the stack. Adding the "
 			.. "corresponding special equipment icon")
 		managers.hud:add_special_equipment({
 			id = "carrystacker", 
@@ -523,17 +536,18 @@ function BLT_CarryStacker:HudRefresh()
 end
 
 function BLT_CarryStacker:RecalculateWeightOnMenuClose()
+	local logger = BLT_CarryStacker.Log
 	if #BLT_CarryStacker.stack > 0 
 			and not BLT_CarryStacker.closePauseMenuCallbacks.recalculateWeight then
         BLT_CarryStacker.closePauseMenuCallbacks.recalculateWeight = function()
-		    BLT_CarryStacker:Log("Bag penalties have been changed " ..
+		    logger("Bag penalties have been changed " ..
 		        "while carrying bags. Recalculating self.weight")
 		    BLT_CarryStacker.weight = 1
 		    for i, cdata in pairs(BLT_CarryStacker.stack) do
 		        BLT_CarryStacker.weight = BLT_CarryStacker.weight
 		            * BLT_CarryStacker:getWeightForType(cdata.carry_id)
 		    end
-		    BLT_CarryStacker:Log("Resulting weight is: " .. 
+		    logger("Resulting weight is: " .. 
 		        tostring(BLT_CarryStacker.weight))
 		end
     end
@@ -542,9 +556,10 @@ end
 Hooks:Add("LocalizationManagerPostInit", 
 	"LocalizationManagerPostInit_BLT_CarryStacker", 
 	function(loc)
-		BLT_CarryStacker:Log("Loading the localization file")
+		local logger = BLT_CarryStacker.Log
+		logger("Loading the localization file")
 		local path = BLT_CarryStacker._path .. "loc/english.txt"
-		BLT_CarryStacker:Log("The path to the localization file is " .. path)
+		logger("The path to the localization file is " .. path)
 		loc:load_localization_file(path)
 	end
 )
@@ -552,13 +567,14 @@ Hooks:Add("LocalizationManagerPostInit",
 Hooks:PostHook(MenuManager, "close_menu", 
 	"MenuManager_Post_close_menu_BLT_CarryStacker",
 	function(menu_manager, menu_name)
+		local logger = BLT_CarryStacker.Log
 		if menu_name == "menu_pause" then
 			-- This section of the code will be executed whenever the 
 			-- player closes the pause menu in-game
-			BLT_CarryStacker:Log("Closing the pause menu")
+			logger("Closing the pause menu")
 			for settingName, callback in pairs(BLT_CarryStacker.closePauseMenuCallbacks) do
 				if callback then
-					BLT_CarryStacker:Log("Calling the callback for " .. settingName)
+					logger("Calling the callback for " .. settingName)
 					callback()
 				end
 			end
@@ -570,19 +586,20 @@ Hooks:PostHook(MenuManager, "close_menu",
 Hooks:Add("MenuManagerInitialize", 
 	"MenuManagerInitialize_BLT_CarryStacker", 
 	function(menu_manager)
-		BLT_CarryStacker:Log("Initializing the menu")
+		local logger = BLT_CarryStacker.Log
+		logger("Initializing the menu")
 		-- Callback for the movement penalty sliders
 		MenuCallbackHandler.BLT_CarryStacker_setBagPenalty = function(this, item)
-			BLT_CarryStacker:Log("The player requested changing a bag penalty")
+			logger("The player requested changing a bag penalty")
 			local _type = item:name():sub(7)
 			local new_value = item:value()
 			BLT_CarryStacker:SetMovPenaltySetting(_type, new_value)
 			if _type == "light" then
-				BLT_CarryStacker:Log("Since 'light' bag's penality has been " ..
+				logger("Since 'light' bag's penality has been " ..
 					"updated, updating 'coke_light' as well")
 				BLT_CarryStacker:SetMovPenaltySetting("coke_light", new_value)
 			elseif _type == "heavy" then
-				BLT_CarryStacker:Log("Since 'heavy' bag's penality has been " ..
+				logger("Since 'heavy' bag's penality has been " ..
 					"updated, updating 'being' and 'slightly_very_heavy as well'")
 				BLT_CarryStacker:SetMovPenaltySetting("being", new_value)
 				BLT_CarryStacker:SetMovPenaltySetting("slightly_very_heavy", new_value)
@@ -591,7 +608,8 @@ Hooks:Add("MenuManagerInitialize",
 
 		-- Reset button callback
 		MenuCallbackHandler.BLT_CarryStacker_Reset = function(this, item)
-			BLT_CarryStacker:Log("The player requested resetting setting " ..
+			local logger = BLT_CarryStacker.Log
+			logger("The player requested resetting setting " ..
 				"to their default")
 			BLT_CarryStacker:ResetSettings()
 			BLT_CarryStacker:RecalculateWeightOnMenuClose()
@@ -628,11 +646,12 @@ Hooks:Add("MenuManagerInitialize",
 		MenuCallbackHandler.BLT_CarryStacker_Open_Options = function(this, is_opening)
 			if not is_opening then return end
 
-			BLT_CarryStacker:Log("The options menu is being opened")
+			local logger = BLT_CarryStacker.Log
+			logger("The options menu is being opened")
 			if LuaNetworking:IsMultiplayer() 
 					and not LuaNetworking:IsHost() 
 					and BLT_CarryStacker:IsRemoteHostSyncEnabled() then
-				BLT_CarryStacker:Log("Since the player is not the host and " ..
+				logger("Since the player is not the host and " ..
 					"remote host sync is enabled, showing an info message " ..
 					" to the player")
 				local title = managers.localization:text("bltcs_playing_as_client_title")
@@ -648,20 +667,22 @@ Hooks:Add("MenuManagerInitialize",
 		end
 
 		MenuCallbackHandler.BLT_CarryStacker_Close_Options = function(this)
-			BLT_CarryStacker:Log("The options are being closed. Saving them")
+			local logger = BLT_CarryStacker.Log
+			logger("The options are being closed. Saving them")
 			BLT_CarryStacker:Save()
 
 			if BLT_CarryStacker:IsHostSyncEnabled() 
 					and LuaNetworking:IsMultiplayer() 
 					and LuaNetworking:IsHost() then
-				BLT_CarryStacker:Log("Since host sync is enabled and the " ..
+				logger("Since host sync is enabled and the " ..
 					" player is the host, synchronising config to peers")
 				BLT_CarryStacker:syncConfigToAll()
 			end
 		end
 
 		MenuCallbackHandler.BLT_CarryStacker_toggleEnable = function(this, item)
-			BLT_CarryStacker:Log("The player wants to change the value of toggle_enable")
+			local logger = BLT_CarryStacker.Log
+			logger("The player wants to change the value of toggle_enable")
 			local value = val2bool(item:value())
 			BLT_CarryStacker:SetSetting("toggle_enable", value)
 
@@ -673,7 +694,7 @@ Hooks:Add("MenuManagerInitialize",
 				BLT_CarryStacker.closePauseMenuCallbacks.toggle_enable = function()
 					if Utils:IsInHeist() 
 							and #BLT_CarryStacker.stack > 0 then
-						BLT_CarryStacker:Log("The player just configured " ..
+						logger("The player just configured " ..
 							"the mod to be disabled, but carrying bags. " ..
 							"Advising the mod wont be disabled until all " ..
 							"bags are dropped")
@@ -684,7 +705,8 @@ Hooks:Add("MenuManagerInitialize",
 		end
 
 		MenuCallbackHandler.BLT_CarryStacker_toggleHostSync = function(this, item)
-			BLT_CarryStacker:Log("The player wants to change the value of toggle_host")
+			local logger = BLT_CarryStacker.Log
+			logger("The player wants to change the value of toggle_host")
 			local value = val2bool(item:value())
 			BLT_CarryStacker:SetSetting("toggle_host", value)
 
@@ -692,7 +714,7 @@ Hooks:Add("MenuManagerInitialize",
 				if BLT_CarryStacker:IsHostSyncEnabled() 
 						and LuaNetworking:IsMultiplayer() 
 						and LuaNetworking:IsHost() then
-					BLT_CarryStacker:Log("Since host sync is enabled and the " ..
+					logger("Since host sync is enabled and the " ..
 						" player is the host, synchronising config to peers")
 					LuaNetworking:SendToPeers(
 						BLT_CarryStacker.NETWORK_MESSAGES.ALLOW_MOD, 
@@ -703,7 +725,8 @@ Hooks:Add("MenuManagerInitialize",
 		end
 
 		MenuCallbackHandler.BLT_CarryStacker_toggleStealthOnly = function(this, item)
-			BLT_CarryStacker:Log("The player wants to change the value of toggle_stealth")
+			local logger = BLT_CarryStacker.Log
+			logger("The player wants to change the value of toggle_stealth")
 			local value = val2bool(item:value())
 			BLT_CarryStacker:SetSetting("toggle_stealth", value)
 
@@ -719,7 +742,7 @@ Hooks:Add("MenuManagerInitialize",
 					if Utils:IsInHeist() 
 							and #BLT_CarryStacker.stack > 0 
 							and not managers.groupai:state():whisper_mode() then
-						BLT_CarryStacker:Log("The player just configured " ..
+						logger("The player just configured " ..
 							"the mod to be used Stealth-Only, but the alarm " ..
 							"is triggered and they are carrying bags. " ..
 							"Advising the mod wont be disabled until all " ..
@@ -731,7 +754,8 @@ Hooks:Add("MenuManagerInitialize",
 		end
 
 		MenuCallbackHandler.BLT_CarryStacker_toggleOfflineOnly = function(this, item)
-			BLT_CarryStacker:Log("The player wants to change the value of toggle_offline")
+			local logger = BLT_CarryStacker.Log
+			logger("The player wants to change the value of toggle_offline")
 			local value = val2bool(item:value())
 			BLT_CarryStacker:SetSetting("toggle_offline", value)
 
@@ -744,7 +768,7 @@ Hooks:Add("MenuManagerInitialize",
 					if Utils:IsInHeist() 
 							and #BLT_CarryStacker.stack > 0 
 							and not Global.game_settings.single_player then
-						BLT_CarryStacker:Log("The player just configured " ..
+						logger("The player just configured " ..
 							"the mod to be used Offline-Only, but the player " ..
 							"is online and they are carrying bags. " ..
 							"Advising the mod wont be disabled until all " ..
@@ -756,23 +780,27 @@ Hooks:Add("MenuManagerInitialize",
 		end
 
 		MenuCallbackHandler.BLT_CarryStacker_toggleShowChatInfo = function(this, item)
-			BLT_CarryStacker:Log("The player wants to change the value of toggle_show_chat_info")
+			local logger = BLT_CarryStacker.Log
+			logger("The player wants to change the value of toggle_show_chat_info")
 			BLT_CarryStacker:SetSetting("toggle_show_chat_info", val2bool(item:value()))
 		end
 
 		MenuCallbackHandler.BLT_CarryStacker_toggleDebug = function(this, item)
-			BLT_CarryStacker:Log("The player wants to change the value of toggle_debug")
+			local logger = BLT_CarryStacker.Log
+			logger("The player wants to change the value of toggle_debug")
 			BLT_CarryStacker:SetSetting("toggle_debug", val2bool(item:value()))
 		end
 
 		MenuCallbackHandler.BLT_CarryStacker_toggleRepeatedLogs = function(this, item)
-			BLT_CarryStacker:Log("The player wants to change the value of toggle_repeated_logs")
+			local logger = BLT_CarryStacker.Log
+			logger("The player wants to change the value of toggle_repeated_logs")
 			BLT_CarryStacker:SetSetting("toggle_repeated_logs", val2bool(item:value()))
 		end
 
 		-- Help button callback
 		MenuCallbackHandler.BLT_CarryStacker_Help = function(this, item)
-			BLT_CarryStacker:Log("The player want to be shown the help message")
+			local logger = BLT_CarryStacker.Log
+			logger("The player want to be shown the help message")
 			local title = managers.localization:text("bltcs_help_title")
 			local message = managers.localization:text("bltcs_help_message")
 			local options = {

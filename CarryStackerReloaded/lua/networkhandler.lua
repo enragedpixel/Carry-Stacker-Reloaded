@@ -3,12 +3,13 @@ dofile(ModPath .. "lua/_modannounce.lua")
 Hooks:Add("NetworkReceivedData", 
 	"NetworkReceivedData_BLT_CarryStacker", 
 	function(sender, id, data)
+		local logger = BLT_CarryStacker.Log
 		if id == BLT_CarryStacker.NETWORK_MESSAGES.ALLOW_MOD then
-			BLT_CarryStacker:Log("Received a request to allow the mod")
+			logger("Received a request to allow the mod")
 			BLT_CarryStacker:HostAllowsMod()
 			BLT_CarryStacker:SetRemoteHostSync(data == 1)
 		elseif id == BLT_CarryStacker.NETWORK_MESSAGES.REQUEST_MOD_USAGE then
-			BLT_CarryStacker:Log("Received a request to use the mod")
+			logger("Received a request to use the mod")
 			LuaNetworking:SendToPeer(sender, 
 				BLT_CarryStacker.NETWORK_MESSAGES.ALLOW_MOD, 
 				BLT_CarryStacker:IsHostSyncEnabled() and 1 or 0)
@@ -17,7 +18,7 @@ Hooks:Add("NetworkReceivedData",
 				BLT_CarryStacker:syncConfigToClient(sender)
 			end
 		elseif id == BLT_CarryStacker.NETWORK_MESSAGES.SET_HOST_CONFIG then
-			BLT_CarryStacker:Log("Received a request to update mod settings")
+			logger("Received a request to update mod settings")
 			local penalty_split = split(tostring(data), ":")
 			local carry_type = penalty_split[1]
 			if type(penalty_split[2]) ~= "number" then return end
@@ -30,7 +31,8 @@ Hooks:Add("NetworkReceivedData",
 )
 
 function BLT_CarryStacker:syncConfigToClient(peer_id)
-	BLT_CarryStacker:Log("Request to sync configuration to " .. tostring(peer_id))
+	local logger = BLT_CarryStacker.Log
+	logger("Request to sync configuration to " .. tostring(peer_id))
 	for i,v in pairs(BLT_CarryStacker:getLocalMovementPenalties()) do
 		LuaNetworking:SendToPeer(peer_id, 
 			BLT_CarryStacker.NETWORK_MESSAGES.SET_HOST_CONFIG, i .. ":" .. v)
@@ -38,7 +40,8 @@ function BLT_CarryStacker:syncConfigToClient(peer_id)
 end
 
 function BLT_CarryStacker:syncConfigToAll()
-	BLT_CarryStacker:Log("Request to sync configuration to all peers")
+	local logger = BLT_CarryStacker.Log
+	logger("Request to sync configuration to all peers")
 	-- TODO the stealth_only option should also be synchronised
 	for i,v in pairs(BLT_CarryStacker:getLocalMovementPenalties()) do
 		LuaNetworking:SendToPeers(
@@ -48,14 +51,15 @@ end
 
 local master_client_load_complete = ClientNetworkSession.on_load_complete
 function ClientNetworkSession:on_load_complete()
-	BLT_CarryStacker:Log("Client network session loaded. Calling the master callback")
+	local logger = BLT_CarryStacker.Log
+	logger("Client network session loaded. Calling the master callback")
 	master_client_load_complete(self)
 
-	BLT_CarryStacker:Log("By default, setting the mod to not be allowed")
+	logger("By default, setting the mod to not be allowed")
 	BLT_CarryStacker:HostDisallowsMod()
 	BLT_CarryStacker:SetRemoteHostSync(false)
 	
-	BLT_CarryStacker:Log("Requesting the host to allow the mod")
+	logger("Requesting the host to allow the mod")
 	LuaNetworking:SendToPeer(managers.network:session():server_peer():id(), 
 		BLT_CarryStacker.NETWORK_MESSAGES.REQUEST_MOD_USAGE, "request")
 end
