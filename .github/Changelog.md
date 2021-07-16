@@ -1,6 +1,18 @@
 # Carry Stacker Reloaded
 
 
+## v1.10.3
+
+- The mod now has an Icon!!
+
+- The carry total weight (used to calculate player's speed and jump) is now recalculated after changing movement penalties in options
+
+- The message to carry a new bag will not be shown if the player cannot carry more bags
+
+- Fixed crash when clicking toggle button "[HOST] Sync Settings with Clients" several times in a row
+
+- Fixed crash when activaing host sync and closing the mod's options menu
+
 ## v1.10.2
 
 - The Changelog can now be seen correctly from the game
