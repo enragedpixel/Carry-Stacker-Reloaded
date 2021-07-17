@@ -16,7 +16,7 @@ function GroupAIStateBase:set_whisper_mode(enabled)
         logger("The mod is configured as Stealh-Only and the " ..
             "player is carrying bags. Advising the mod wont be disabled " ..
             "until all bags are dropped")
-        BLT_CarryStacker:ShowInfoMessage("bltcs_stealth_only_alarm_message")
+        BLT_CarryStacker.ShowInfoMessage("bltcs_stealth_only_alarm_message")
     end
     master_GroupAIStateBase_set_whisper_mode(self, enabled)
 end

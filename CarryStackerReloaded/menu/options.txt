@@ -41,9 +41,9 @@
 			"description" : "bltcs_slider_light_desc",
 			"callback" : "BLT_CarryStacker_setBagPenalty",
 			"value" : "light",
-			"default_value" : 10,
+			"default_value" : 15,
 			"min" : 0,
-			"max" : 50,
+			"max" : 75,
 			"step" : 1
 		},
 		{
@@ -53,9 +53,9 @@
 			"description" : "bltcs_slider_medium_desc",
 			"callback" : "BLT_CarryStacker_setBagPenalty",
 			"value" : "medium",
-			"default_value" : 20,
+			"default_value" : 30,
 			"min" : 0,
-			"max" : 50,
+			"max" : 75,
 			"step" : 1
 		},
 		{
@@ -65,9 +65,9 @@
 			"description" : "bltcs_slider_heavy_desc",
 			"callback" : "BLT_CarryStacker_setBagPenalty",
 			"value" : "heavy",
-			"default_value" : 30,
+			"default_value" : 45,
 			"min" : 0,
-			"max" : 50,
+			"max" : 75,
 			"step" : 1
 		},
 		{
@@ -77,9 +77,9 @@
 			"description" : "bltcs_slider_veryheavy_desc",
 			"callback" : "BLT_CarryStacker_setBagPenalty",
 			"value" : "very_heavy",
-			"default_value" : 40,
+			"default_value" : 60,
 			"min" : 0,
-			"max" : 50,
+			"max" : 75,
 			"step" : 1
 		},
 		{
@@ -89,9 +89,9 @@
 			"description" : "bltcs_slider_megaheavy_desc",
 			"callback" : "BLT_CarryStacker_setBagPenalty",
 			"value" : "mega_heavy",
-			"default_value" : 50,
+			"default_value" : 75,
 			"min" : 0,
-			"max" : 50,
+			"max" : 75,
 			"step" : 1
 		},
 

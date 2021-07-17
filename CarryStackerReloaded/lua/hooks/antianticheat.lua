@@ -11,7 +11,7 @@ function doAntiAntiCheat(master_function, ...)
 	local logger = BLT_CarryStacker.Log
 	logger("Request to do the antianticheat procedure")
 	if BLT_CarryStacker:GetModState() == BLT_CarryStacker.STATES.DISABLED then
-		return BLT_CarryStacker:DoMasterFunction(false, master_function, ...)
+		return BLT_CarryStacker.DoMasterFunction(false, master_function, ...)
 	end
 	logger("The mod is enabled. Returning true")
 	return true

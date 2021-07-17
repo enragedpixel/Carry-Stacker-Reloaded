@@ -3,10 +3,10 @@ local master_CarryInteractionExt_interact_blocked = CarryInteractionExt._interac
 local master_CarryInteractionExt_can_select = CarryInteractionExt.can_select
 
 function IntimitateInteractionExt:_interact_blocked(player)
-	logger = BLT_CarryStacker.Log
+	local logger = BLT_CarryStacker.Log
 	logger("Called IntimitateInteractionExt:_interact_blocked")
 	if BLT_CarryStacker:GetModState() == BLT_CarryStacker.STATES.DISABLED then
-		return  BLT_CarryStacker:DoMasterFunction(false, 
+		return  BLT_CarryStacker.DoMasterFunction(false, 
 			master_IntimitateInteractionExt_interact_blocked, self, player)
 	end
 
@@ -30,10 +30,10 @@ function IntimitateInteractionExt:_interact_blocked(player)
 end
 
 function CarryInteractionExt:_interact_blocked(player)
-	logger = BLT_CarryStacker.Log
+	local logger = BLT_CarryStacker.Log
 	logger("Called CarryInteractionExt:_interact_blocked")
 	if BLT_CarryStacker:GetModState() == BLT_CarryStacker.STATES.DISABLED then
-		return  BLT_CarryStacker:DoMasterFunction(false, 
+		return  BLT_CarryStacker.DoMasterFunction(false, 
 			master_CarryInteractionExt_interact_blocked, self, player)
 	end
 
@@ -44,10 +44,10 @@ function CarryInteractionExt:_interact_blocked(player)
 end
 
 function CarryInteractionExt:can_select(player)
-	logger = BLT_CarryStacker.RLog
+	local logger = BLT_CarryStacker.RLog
 	logger("Request to check whether the player can select a bag")
 	if BLT_CarryStacker:GetModState() ~= BLT_CarryStacker.STATES.ENABLED then
-		return  BLT_CarryStacker:DoMasterFunction(true, 
+		return  BLT_CarryStacker.DoMasterFunction(true, 
 			master_CarryInteractionExt_can_select, self, player)
 	end
 
