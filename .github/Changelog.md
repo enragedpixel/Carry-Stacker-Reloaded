@@ -5,6 +5,8 @@
 
 - The mod now has an Icon!!
 
+- Default bag weight have been changed. Now the maximum configurable weight for each bag type is 75
+
 - The carry total weight (used to calculate player's speed and jump) is now recalculated after changing movement penalties in options
 
 - The message to carry a new bag will not be shown if the player cannot carry more bags
