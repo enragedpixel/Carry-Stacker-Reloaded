@@ -51,15 +51,15 @@ function BLT_CarryStacker:ResetSettings()
     local logger = BLT_CarryStacker.Log
     logger("Resetting settings to their default values")
     self.settings.movement_penalties = {
-        light = 10,
-        coke_light = 10,
-        medium = 20,
-        heavy = 30,
-        very_heavy = 40,
-        mega_heavy = 50,
+        light = 15,
+        coke_light = 15,
+        medium = 30,
+        heavy = 45,
+        very_heavy = 60,
+        mega_heavy = 75,
 
-        being = 30,
-        slightly_very_heavy = 30
+        being = 45,
+        slightly_very_heavy = 45
     }
     self.settings.toggle_enable = true
     self.settings.toggle_host = true
