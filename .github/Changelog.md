@@ -1,5 +1,8 @@
 # Carry Stacker Reloaded
 
+## v1.10.4
+
+- Fixed syntax error in mod.txt
 
 ## v1.10.3
 
