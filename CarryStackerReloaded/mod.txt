@@ -3,7 +3,7 @@
   "description": "Carry Stacker Reloaded - Now both nerfed and better at the same time!",
   "author": "Lordmau5, enragedpixel, theo-ardouin, m-alorda",
   "contact": "https://github.com/enragedpixel/Carry-Stacker-Reloaded/issues",
-  "version": "v1.10.3",
+  "version": "v1.10.4",
   "image" : "CarryStackerReloaded.png",
   "color": "200 50 120",
   "blt_version": 2,
