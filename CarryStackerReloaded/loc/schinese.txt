@@ -1,0 +1,63 @@
+{
+	"bltcs_common_ok": "好的",
+
+	"bltcs_options_menu_title" : "Carry Stacker Reloaded",
+	"bltcs_options_menu_desc"  : "Carry Stacker Reloaded 选项",
+
+	"bltcs_button_help_title" : "帮助",
+	"bltcs_button_help_desc"  : "显示帮助菜单",
+
+	"bltcs_help_title": "Carry Stacker 帮助",
+	"bltcs_help_message": "Carry Stacker 几乎完全从头开始重新编写。\n\n你可能会问：为什么？\n好吧，这么说吧，我不喜欢它之前的版本。\n\n这个新版本现在允许你同时携带所有类型的袋子。\n而且，它现在还具有移速惩罚！\n没错，这次不再超级 OP 了。\n\n这个系统背后有一些数学原理。假设你的最大移动速度是 100/100。\n现在，你有一个“轻型”袋子，你会受到 10% 的移速惩罚。由于 100 的 10% 是 10，所以你的移速被惩罚为 90/100。\n如果你拿起另一个“轻型”袋子，你会再次被施加 10% 的移速惩罚。因为你此时的移速是 90，所以在降低 10% 后变为了 81/100。\n\n惩罚值（滑块百分比）越高，你能携带的袋子数量就越少。\n例如，默认值允许同时混合携带 3 个“轻型”袋子和 3 个“重型”袋子。\n如果你的移速达到 25/100，你将无法再拾取袋子。\n__________________________________\n滑块用于选择不同类型的袋子。\n\n轻型袋子：\n珠宝、绘画、可卡因、冰毒、证据\n\n中型袋子：\n钱、弹药、武士盔甲、设备、古董（轻）\n\n重型袋子：\n黄金、人、武器、电路、炮塔、保险箱\n\n超重型袋子：\n古董（重）\n\n极重型袋子：\n引擎",
+
+	"bltcs_playing_as_client_title" : "Carry Stacker - 客户端",
+	"bltcs_playing_as_client_message" : "你当前为客户端。\nCarry Stacker 的设置将与主机端同步。\n你在此处所做的更改将不会在本场劫案中生效。",
+
+	"bltcs_button_apply_title" : "应用",
+	"bltcs_button_apply_desc"  : "应用更改（数字将被四舍五入）",
+
+	"bltcs_button_reset_title" : "重置",
+	"bltcs_button_reset_desc"  : "将模组选项重置为默认值",
+
+	"bltcs_toggle_host_sync_title" : "[主机端] 将设置同步到客户端",
+	"bltcs_toggle_host_sync_desc" : "如果你是主机端，你将会把你的设置发送给其他玩家",
+
+	"bltcs_toggle_enable_title" : "启用",
+	"bltcs_toggle_enable_desc" : "全局启用/禁用此模组",
+
+	"bltcs_toggle_stealth_only_title" : "仅限潜行",
+	"bltcs_toggle_stealth_only_desc" : "仅在潜行模式下可用",
+
+	"bltcs_toggle_offline_only_title" : "仅限离线",
+	"bltcs_toggle_offline_only_desc" : "仅在离线模式下可用",
+
+	"bltcs_toggle_show_chat_info_title" : "在聊天中显示信息",
+	"bltcs_toggle_show_chat_info_desc" : "在聊天框中显示模组信息",
+
+	"bltcs_toggle_debug_title" : "调试",
+	"bltcs_toggle_debug_desc" : "显示模组日志",
+
+	"bltcs_toggle_repeated_logs_title" : "重复日志",
+	"bltcs_toggle_repeated_logs_desc" : "显示每秒重复多次的日志消息（仅在启用调试时）。警告：日志将占用大量内存，游戏性能可能会大幅降低",
+
+	"bltcs_slider_light_title" : "轻型袋子",
+	"bltcs_slider_light_desc" : "定义轻型袋子的移速惩罚",
+
+	"bltcs_slider_medium_title" : "中型袋子",
+	"bltcs_slider_medium_desc" : "定义中型袋子的移速惩罚",
+
+	"bltcs_slider_heavy_title" : "重型袋子",
+	"bltcs_slider_heavy_desc" : "定义重型袋子的移速惩罚",
+
+	"bltcs_slider_veryheavy_title" : "超重型袋子",
+	"bltcs_slider_veryheavy_desc" : "定义超重型袋子的移速惩罚",
+
+	"bltcs_slider_megaheavy_title" : "极重型袋子",
+	"bltcs_slider_megaheavy_desc" : "定义极重型袋子的移速惩罚",
+
+	"bltcs_stealth_only_alarm_message": "正在以“仅限潜行”模式进行游戏。在所有袋子都丢下之前，此模组不会被禁用",
+
+	"bltcs_offline_only_online_message": "正在以“仅限离线”模式进行游戏。在所有袋子都丢下之前，此模组不会被禁用",
+
+	"bltcs_disabled_message": "在所有袋子都丢下之前，此模组不会被禁用"
+}

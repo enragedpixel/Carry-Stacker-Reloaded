@@ -10,10 +10,25 @@ Hooks:Add("LocalizationManagerPostInit",
 	"LocalizationManagerPostInit_BLT_CarryStacker", 
 	function(loc)
 		local logger = BLT_CarryStacker.Log
-		logger("Loading the localization file")
-		local path = BLT_CarryStacker._path .. "loc/english.txt"
-		logger("The path to the localization file is " .. path)
-		loc:load_localization_file(path)
+		local current_language = SystemInfo:language():key()
+		local localization_loaded = false
+
+		for _, filename in pairs(file.GetFiles(BLT_CarryStacker._path .. "loc/")) do
+			local lang_code = filename:match('^(.*)%.txt$')
+			if lang_code and Idstring(lang_code):key() == current_language then
+				local file_path = BLT_CarryStacker._path .. "loc/" .. filename
+				loc:load_localization_file(file_path)
+				logger("Successfully loaded localization for language: " .. lang_code)
+				localization_loaded = true
+				break
+			end
+		end
+
+		if not localization_loaded then
+			local english_path = BLT_CarryStacker._path .. "loc/english.txt"
+			loc:load_localization_file(english_path)
+			logger("No matching localization file found. Loaded default English.")
+		end
 	end
 )
 
